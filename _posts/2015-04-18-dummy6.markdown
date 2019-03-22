@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "�׽�Ʈ"
+title:  "테스트"
 date:   2015-04-18 08:43:59
 author: Ben Centra
 categories: Dummy
