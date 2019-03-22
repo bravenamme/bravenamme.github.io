@@ -69,7 +69,7 @@ jekyll-archives:
 #     url: https://twitter.com/TheBenCentra # URL of your profile (leave blank to not display in footer)
 #     desc: Follow me on Twitter            # Description to display as link title, etc
 #     share: true                           # Include in the "Share" section of posts
-social:
+# social:
 #  - name: Twitter
 #    icon: twitter
 #    username: TheBenCentra
