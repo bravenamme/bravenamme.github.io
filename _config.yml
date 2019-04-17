@@ -40,6 +40,17 @@ jekyll-archives:
     category: '/category/:name/'
     tag: '/tag/:name/'
 
+collections:
+  tags:
+    output: true
+    permalink: /tags/:path/
+
+defaults:
+  - scope:
+      path: ''
+      type: tags
+    values:
+      layout: tag
 # Disqus comments
 # disqus_shortname: bencentra
 
