@@ -2,8 +2,13 @@
 layout: page
 title: About
 permalink: /about/
+image: /files/covers/blog.jpg
+sitemap: yes
+tags: [about]
 ---
 
-<img src="{{ site.baseurl }}/assets/profile-placeholder.jpg" title="Profile Picture" class="profile">
+저희는....
 
-평범한 개발자들 이야기 입니다.
+치킨집 하기 싫어서....
+
+평범한 개발자들이 모여서 운영하는 기술 블로그 입니다.
