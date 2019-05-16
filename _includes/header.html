@@ -14,8 +14,9 @@
     <ul class="search__results" id="results-container"></ul>
 
     <ul id="menu" class="nav">
-        <li class="{% if page.url != '/about/' %} active {% endif %}"><a href="{{ base_path }}/">Tech</a></li>
+        <li class="{% if page.url != '/about/' and page.url != '/authors/' %} active {% endif %}"><a href="{{ base_path }}/">Tech</a></li>
         <li class="{% if page.url == '/about/' %} active {% endif %}"><a href="{{ base_path }}/about/">About</a></li>
+        <li class="{% if page.url == '/authors/' %} active {% endif %}"><a href="{{ base_path }}/authors/">Authors</a></li>
     </ul>
 </div>
 <!-- Script pointing to jekyll-search.js -->
