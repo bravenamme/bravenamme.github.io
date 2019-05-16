@@ -33,7 +33,8 @@ push 권한 요청 메일 전송
 
 name: twosunny --> 작성자 닉네임
 title: 최우선 --> 작성자 이름
-image: /files/authors/twosunny.jpg -- 본인의 프로필 사진 경로
+image: /files/authors/twosunny.jpg --> 본인의 프로필 사진 경로
+email: singwoosun@gmail.com --> 본인 이메일
 ```
 
 #### post 작성

@@ -15,6 +15,9 @@ layout: default
         </div>
         <h1>{{ page.title | default: page.name }}</h1>
         <p>All Posts by <em>{{ page.name }}</em></p>
+        {% if page.email %}
+        <p>email : {{page.email}}</p>
+        {% endif%}
     </div>
 </div>
 
