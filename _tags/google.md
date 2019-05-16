@@ -1,4 +1,0 @@
----
-name: google
-title: 'google'
----
