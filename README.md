@@ -25,17 +25,15 @@ push 권한 요청 메일 전송
     /files/authors/ 폴더에 사진 파일 추가(사진은 되도록 100kb이하)
     
 3. 위 1번에서 생성한 파일에 내용추가 (twosunny.md 파일 참고)
-
-4. 작성한 프로필 파일 및 이미지 push
-
-
-```console
-
+```
 name: twosunny --> 작성자 닉네임
 title: 최우선 --> 작성자 이름
 image: /files/authors/twosunny.jpg --> 본인의 프로필 사진 경로
 email: singwoosun@gmail.com --> 본인 이메일
 ```
+
+4. 작성한 프로필 파일 및 이미지 push
+
 
 #### post 작성
 1. _posts 폴더에 파일 생성
@@ -72,7 +70,7 @@ tags:	[java,bufferedImage,pngEncoder]
 ```
 그렇다면, _tags폴더에 java.md, bufferedImage.md, pngEncoder.md 3개 파일을 생성해준다,
 
-파일 작성시 내용을 보면
+java.md 파일 작성시 내용을 보면
 ```
 name: java --> 태그 이름
 title: 'java' --> 태그 이름
