@@ -76,3 +76,5 @@ name: java --> 태그 이름
 title: 'java' --> 태그 이름
 ```
 이렇게 작성해 준다.
+
+[Jekyll]: https://jekyllrb.com
