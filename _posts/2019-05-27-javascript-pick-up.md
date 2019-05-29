@@ -21,7 +21,7 @@ JavaScript 표준을 제정하는 기술 그룹인 TC39
 
 
 ## TC39 Process
-ESNext 들은 어떠한 과정으로 정식 출시되는가? TC39 프로세스라 불리는 과정을 통해 제정되는데,
+ESNext 들은 TC39 프로세스라 불리는 과정을 통해 제정되는데,
 진행 단계에 따라 허수아비 단계와 성숙한 1~4단계로 나눠진다. 
 
 <img src="/files/posts/201905/pickme.png" style="max-width:100%;">
