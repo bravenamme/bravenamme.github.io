@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "ESnext, 내일의 자바스크립트"
-date:   2019-05-14 10:00
+date:   2019-05-30 10:00
 author: jizero
 tags:	[javascript,'ECMAscript','esnext']
 ---
