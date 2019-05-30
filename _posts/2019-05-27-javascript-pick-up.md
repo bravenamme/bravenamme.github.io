@@ -131,4 +131,4 @@ if (myForm.checkValidity?.() === false) { // skip the test in older web browsers
 [https://benmccormick.org/2015/09/14/es5-es6-es2016-es-next-whats-going-on-with-javascript-versioning](https://benmccormick.org/2015/09/14/es5-es6-es2016-es-next-whats-going-on-with-javascript-versioning) 
 [https://www.freecodecamp.org/news/es5-to-esnext-heres-every-feature-added-to-javascript-since-2015-d0c255e13c6e/](https://www.freecodecamp.org/news/es5-to-esnext-heres-every-feature-added-to-javascript-since-2015-d0c255e13c6e/)<br/>
 [http://it.chosun.com/site/data/html_dir/2018/07/25/2018072501553.html/](http://it.chosun.com/site/data/html_dir/2018/07/25/2018072501553.html)<br/>
-[https://github.com/tc39/proposals](https://github.com/tc39/proposals.)
+[https://github.com/tc39/proposals](https://github.com/tc39/proposals)
