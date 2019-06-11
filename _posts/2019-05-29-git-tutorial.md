@@ -1,9 +1,9 @@
 ---
 layout: post
 title:  "GIT tutorial"
-date:   2019-05-29 10:00
+date:   2019-06-11 10:00
 author: moohyuk
-tags:	[git, tutorial]
+tags:	[git, git-flow]
 ---
 작성에 앞서 해당 POST 는 git 초보자를 위한 글 임을 밝힙니다.  
 요즘 대세는 git 인데 우리는 여전히 svn 에 의존하고 있습니다. svn 은 개념적으로 접근이 쉽습니다. 개발자는 늘 새로운것에 친숙해야 하는데 쉬움에 동반되는 편안함이 변화와 트랜드를 멀리하게 만드는 것은 아닐까요? (제 얘기 입니다. 비단 버전 컨트롤에 해당 되는 이야기는 아닌것 같지만...)  
@@ -19,14 +19,15 @@ tags:	[git, tutorial]
 * 서버 저장소와 개인의 저장소가 독립적인 commit history 를 갖음으로써 유연한 source 관리가 가능하며 이것이 가장 큰 장점 이다.
 
 
-![fig1. git commit history 관리](/files/posts/ffm-git.png)
+Ref.[http://seungzzang.blogspot.com][seungzzang]![fig1.git commit history 관리](/files/posts/ffm-git.png)  
+
 ### 단점
 * 개념적으로 어려우며 러닝커브가 높다
 * 여러 개발자의 branch 를 관리하는 리소스 필요 (규모가 큰 프로젝트의 경우 통합 관리자 필요)
 
 ***
 
-## stage 와 unstage 그리고 commit
+## stage 와 unstage 그리고... commit
 ### stage 
 저장소에서 변경된 파일을 커밋 대상에 포함되도록 예약하는 것을 스테이지라고 합니다. 커밋을 위해서는 파일을 stage 상태로 만들어야 합니다. 예를 들어 이클립스 git-plugin 의 경우 "add to index", bash 에서는 "git add <파일경로>" 를 통해 stage 상태로 변경 할 수 있으며 해당 파일은 스테이지 영역에 포함되게 됩니다.
 
@@ -49,7 +50,7 @@ stage 상태의 파일을 스테이지 영역에서 제외하여 커밋 대상�
 다만 위와같이 처리 할 경우 다른 사용자가 reset 이전의 버전을 내려받아 사용중이라면 소스 버전은 두개로 분리되게 됩니다. 해당 사용자는 여전히 reset 이전의 히스토리를 가지고 있기 때문에 소스를 병합할 때 어려움을 맞이하게 되며 이러한 사용자가 존재 하는지 확인할 방법이 없기 때문에 reset 을 사용할 때는 조심해야 합니다.
 (해당 개발자의 local/master 의 HEAD 를 현재와 맞춰야 하는 상황이 발생)
 
-![fig2. git reset](/files/posts/reset.png)  
+Ref.[https://www.atlassian.com][atlassian]![fig2.git reset](/files/posts/reset.png)  
 
 ### REVERT
 위와 같은 상황을 피하고 싶다면 revert 를 사용하면 됩니다.
@@ -62,7 +63,7 @@ REVERT 명령어를 사용할 때는 위와 같이 되돌리고 싶은 commit �
  * git revert --no-commit HEAD~3.. # 또는 master~3..master
 
 
-![fig3. git revert](/files/posts/revert.svg)
+Ref.[https://www.atlassian.com][atlassian]![fig3.git revert](/files/posts/revert.svg)
 
 ***
 
@@ -70,7 +71,7 @@ REVERT 명령어를 사용할 때는 위와 같이 되돌리고 싶은 commit �
 git-flow 전략은 소프트웨어의 소스코드를 관리하고 출시하기 위한 '브랜치 관리 전략'(branch management strategy)입니다. 백문이 불여일견! 간략한 설명을 위해 우선 아래 이미지를 봅시다.
 
 이미 앱 개발자들과는 많은 논의를 거친 이미지 입니다.
-![fig4. git-flow 전략](/files/posts/gitflow.png)
+Ref.[https://nvie.com][git-branch-model]![fig4.git-flow 전략](/files/posts/gitflow.png)
 
 ### master branch(배포)
 배포 되었거나 배포준비(production-ready)된 코드는 `origin/master` 로 관리 합니다.
@@ -88,8 +89,9 @@ git-flow 에서 master 브랜치에 `병합` 한다는 것은 새버전을 배�
   시작브랜치: develop  
   병합대상 브랜치: develop
   브랜치이름 규칙: master, develop, release-, hotfix- 를 제외한 것  
-``` 
-![fig5. feature branch](/files/posts/git-feature.png)
+```  
+
+Ref.[https://nvie.com][git-branch-model]![fig5.feature branch](/files/posts/git-feature.png)
 
 * ##### release (출시/QA 브랜치)  
 `release` 브랜치는 실제 배포할 상태가 된 경우에 생성하는 브랜치 입니다. 해당 브랜치를 QA 에 전달해 최종 테스트를 수행할 수 있습니다. `master` 브랜치를 통해 배포 해야하므로 QA가 완료되면 `release`를 `master` 브랜치로 병합 합니다. (향후 관리를 위해 태그를 만들어 현재 병합되는 커밋을 가리킨다.) 이 때 배포된 기능에 반영될 수 있도록 `develop` 브랜치에도 함께 병합되어야 합니다.  
@@ -106,7 +108,8 @@ git-flow 에서 master 브랜치에 `병합` 한다는 것은 새버전을 배�
   병합대상 브랜치: develop, master
   브랜치이름 규칙: hotfix-*
 ``` 
-![fig6. hotfix branch](/files/posts/git-feature.png)
+
+Ref.[https://nvie.com][git-branch-model]![fig6.hotfix branch](/files/posts/git-feature.png)
 
 ***  
 
@@ -146,16 +149,18 @@ git-flow 에서 master 브랜치에 `병합` 한다는 것은 새버전을 배�
 ***
 
 ### ref.
-  * [git-간편안내서][rogerdudler.github.io]  
-  * [git-scm.com][git-scm]  
-  * [seungzzang.blogspot.com][seungzzang]  
-  * [www.atlassian.com][atlassian]  
-  * [gist.github.com/ihoneymon][ihoneymon]
+  * [http://rogerdudler.github.io][rogerdudler.github.io]  
+  * [https://git-scm.com][git-scm]  
+  * [http://seungzzang.blogspot.com][seungzzang]  
+  * [https://www.atlassian.com][atlassian]  
+  * [https://nvie.com][git-branch-model]
+  * [https://gist.github.com/ihoneymon][ihoneymon]
 
 
 
 [rogerdudler.github.io]: http://rogerdudler.github.io/git-guide/index.ko.html
 [git-scm]: https://git-scm.com
 [seungzzang]: http://seungzzang.blogspot.com/2013/04/git-svn-svn-git.html
+[git-branch-model]: https://nvie.com/posts/a-successful-git-branching-model/
 [atlassian]: https://www.atlassian.com/git/tutorials/resetting-checking-out-and-reverting
 [ihoneymon]: https://gist.github.com/ihoneymon/a28138ee5309c73e94f9
