@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://bravenamme.github.io/sitemap.xml
