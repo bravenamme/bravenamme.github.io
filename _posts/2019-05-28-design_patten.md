@@ -54,8 +54,9 @@ Router는 화면 전환을 담당한다. Router는 화면 전환 애니메이션
 이러한 문제를 해결하기 위해 Viper 클래스를 자동으로 생성해주는 code generator  바로 Uber에서 만든 Ribs 이다.
 
 
-## Ribs 샘플코드 분석 (feat. RxSwift) 반응형... 반응형..
+## Ribs IOS, Android 샘플코드 분석 (feat. 반응형)
 ![출처:https://github.com/uber/RIBs](/files/posts/0617_tictactoe.png)
+
 ![출처:https://github.com/uber/RIBs](/files/posts/0617_and_tictactoe.png)
 
 LoggedOutViewController 에서 “로그인” 버튼 액션을 받는다
@@ -70,7 +71,7 @@ RootInteractor에서 프로토콜을 업데이트하고 RootInteractor 클래스
 ## 결론
 
 Viper를 사용하는 사람들은 "자잘한 레고를 가지고 여럿이서 오랜시간에 걸쳐  엄청나게 큰 건물을 짖는 느낌"이라고 한다. 
-개인적으로 지금 당장 앱에 Viper를 적용시키는 것은 무리가 있다고 생각한다. 대형 프로젝트가 아니라면 좀더 단순한 패턴을 고려하는게 좋다고 생각한다.
+개인적으로 지금 당장 앱에 Viper를 적용시키는 것은 무리가 있고, 대형 프로젝트가 아니라면 좀더 단순한 패턴을 고려하는게 좋다고 생각한다.
 
 몇몇 사람들은 유지보수 비용이 엄청나게 들더라도, 적어도 미래의 언젠가는 Viper 패턴으로 이득을 볼 것이라고 생각하고 강행 하기도한다. 
 하지만 왠지 "호미로 막을 것을 가래로 막느 것" 같은 느낌이 아니 아니 들 수 없다.
