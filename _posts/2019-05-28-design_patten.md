@@ -24,11 +24,11 @@ ViewController는 View Life Cycle과 매우 강하게 연결되어 있으므로 
 ## MVVM
 IOS에서 가장 인기 있는 패턴이 MVVM이다. 가장 중요한 점이 UIViewController 와 UIView가 따로 분류된다는 점이다. 이는 또한 View Model을 테스트 할 수 있으므로 MVVM은 상당히 쓸만한 패턴이라고 할수 있다. View Model은 ViewController 로딩과 의존성이 없으므로 비즈니스 로직을 테스트 할 수 있다.)
 
-다만 MVVM은 바인딩을 도와주는 라이브러리를 함께 사용하지 않으면 많은 기반 코드를 작성해야 한다는 점이다. ReactiveCocoa 와  Rx(Reactive Extentions) 등은 멋진 라이브러리지만 사용법이 쉽지 않아서 익숙해지기까지 상당한 시간이 필요하다. (개발자의 요구에 미치 못해서 많은 부분 시간을 소비 해야 할 수 도 있다.)
+다만 MVVM은 바인딩을 도와주는 라이브러리를 함께 사용하지 않으면 많은 기반 코드를 작성해야 한다는 점이다. ReactiveCocoa 와  Rx(Reactive Extentions) 등은 멋진 라이브러리지만 사용법이 쉽지 않아서 익숙해지기까지 상당한 시간이 필요하다. (개발자의 요구에 미치지 못해서 많은 부분 시간을 소비 해야 할 수 도 있다.)
 
 MVVM에는 라우터 역할에 해당하는 것이 없기 때문에 ViewController 와 어떻게 바인딩 할지에 대한 문제가 여전히 남아있다 . WWDC에서 Apple 은 라우터가 없다면, 의존성 주입을 사용하고 권장을 했다.
 
-많은 의존성이 포함된 뷰 컨트롤러의 코드는 가독성이 매우 떨어진다. 소스 코드를 봐도 어떤 것이 실제로 필요한 것인지 파악하기 힘들 것이다. 뷰 컨트롤러 소스에서 데이터베이스도 사용하고, 이미지 프로바이더도 사용하고, logger도 사용하고, 그 밖에 다른 것들도 사용하거나 실제로 사용하는 것이 없을 수도 있다.
+그러나 많은 의존성이 포함된 뷰 컨트롤러의 코드는 가독성이 매우 떨어진다. 소스 코드를 봐도 어떤 것이 실제로 필요한 것인지 파악하기 힘들 것이다. 뷰 컨트롤러 소스에서 데이터베이스도 사용하고, 이미지 프로바이더도 사용하고, logger도 사용하고, 그 밖에 다른 것들도 사용하거나 실제로 사용하는 것이 없을 수도 있다.
 
 라우터가 없는 MVVM의 단점은 불필요한 의존성이 발생한다는 점이다. 자신이 뷰 모델에 포함된 경우를 제외하고는 뷰 모델이 다른 뷰 모델에 대해 알 필요가 없다.
 코드 재사용성도 낮고, if 문이 많이 사용된 스파게티 코드가 된다.
@@ -54,23 +54,25 @@ Router는 화면 전환을 담당한다. Router는 화면 전환 애니메이션
 이러한 문제를 해결하기 위해 Viper 클래스를 자동으로 생성해주는 code generator  바로 Uber에서 만든 Ribs 이다.
 
 
-## Ribs 샘플코드 분석
+## Ribs 샘플코드 분석 (feat. RxSwift) 반응형... 반응형..
 ![출처:https://github.com/uber/RIBs](/files/posts/0617_tictactoe.png)
 ![출처:https://github.com/uber/RIBs](/files/posts/0617_and_tictactoe.png)
 
 LoggedOutViewController 에서 “로그인” 버튼 액션을 받는다
 LoggedOutPresentableListener 을 호출 한다.
 
-이름을 받기전까지 버튼을 disable 하는 부분은 LoggedOutPresentableListener 프로토콜을 따르도록 LoggedOutInteractor를 수정을한다
+이름을 받기전까지 버튼을 disable 하는 부분은 LoggedOutPresentableListener 프로토콜을 따르도록 LoggedOutInteractor를 수정을 한다.
 그래서 결국 버튼을 터치한경우 LoggedOutViewController 리스터의 함수를 호출하면 LoggedOutInteractor의 로직을 따르게 된다.
-
-LoggedOutInteractor 에 로그인 완료 리스너를 추가 한다.
-LoggedOutInteractor 에 이전에 작성한 login 함수의 구현을 변경하여 새로 선언 된 리스너 호출을 추가한다.
+LoggedOutInteractor 에 로그인 완료 리스너를 추가 한다. LoggedOutInteractor 에 이전에 작성한 login 함수의 구현을 변경하여 새로 선언 된 리스너 호출을 추가한다.
 RootInteractor에서 프로토콜을 업데이트하고 RootInteractor 클래스에 didLogin함수를 업데이트 한다.
 
 
 ## 결론
 
-Viper를 사용하는 사람들은 레고로 엄청나게 큰 건물을 짖는 느낌이라고 한다. 지금 우리의 앱에 Viper를 적용시키는 것은 너무나도 이르다. 좀더 단순한 패턴을 고려하는게 좋다.
-몇몇 사람들은 이를 무시하고 참새에게 기관포를 쏘는 행위를 계속 하는데, 지금 당장은 유지보수 비용이 엄청나게 들더라도, 적어도 미래의 언젠가는 Viper 패턴으로 이득을 볼 것이라고 생각하기 때문이겟지?
-결국 아키텍처 패턴을 선택하는 문제는 완벽한 정답이란 없고, 프로젝트에 따라 상황에 맞게 패턴을 저울질 하는게 중요하다고 생각한다.
+Viper를 사용하는 사람들은 "자잘한 레고를 가지고 여럿이서 오랜시간에 걸쳐  엄청나게 큰 건물을 짖는 느낌"이라고 한다. 
+개인적으로 지금 당장 앱에 Viper를 적용시키는 것은 무리가 있다고 생각한다. 대형 프로젝트가 아니라면 좀더 단순한 패턴을 고려하는게 좋다고 생각한다.
+
+몇몇 사람들은 유지보수 비용이 엄청나게 들더라도, 적어도 미래의 언젠가는 Viper 패턴으로 이득을 볼 것이라고 생각하고 강행 하기도한다. 
+하지만 왠지 "호미로 막을 것을 가래로 막느 것" 같은 느낌이 아니 아니 들 수 없다.
+
+결국 아키텍처를 설계하는 문제는 완벽한 정답이란 없고, 프로젝트에 따라 상황에 맞게 저울질 하는게 중요하다고 생각한다.
