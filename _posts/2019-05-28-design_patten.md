@@ -3,7 +3,7 @@ layout: post
 title:  No more "MVC"
 date:   2019-06-17 10:00
 author: sunyung
-tags: [IOS, MVC, MVVM, VIPER, RIPs, Uber ]
+tags: [ios, mvc, mvvm, viper, ribs]
 ---
 
 개발자라면 누구나 디자인 패턴에 대해서 한번쯤은 생각해 보았을 것이다.
