@@ -59,8 +59,7 @@ Router는 화면 전환을 담당한다. Router는 화면 전환 애니메이션
 
 ![출처:https://github.com/uber/RIBs](/files/posts/0617_and_tictactoe.png)
 
-LoggedOutViewController 에서 “로그인” 버튼 액션을 받는다
-LoggedOutPresentableListener 을 호출 한다.
+LoggedOutViewController 에서 “로그인” 버튼 액션을 받은 후 LoggedOutPresentableListener 을 호출 한다.
 
 이름을 받기전까지 버튼을 disable 하는 부분은 LoggedOutPresentableListener 프로토콜을 따르도록 LoggedOutInteractor를 수정을 한다.
 그래서 결국 버튼을 터치한경우 LoggedOutViewController 리스터의 함수를 호출하면 LoggedOutInteractor의 로직을 따르게 된다.
