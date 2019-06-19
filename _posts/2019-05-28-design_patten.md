@@ -61,10 +61,11 @@ Router는 화면 전환을 담당한다. Router는 화면 전환 애니메이션
 
 LoggedOutViewController 에서 “로그인” 버튼 액션을 받은 후 LoggedOutPresentableListener 을 호출 한다.
 
-이름을 받기전까지 버튼을 disable 하는 부분은 LoggedOutPresentableListener 프로토콜을 따르도록 LoggedOutInteractor를 수정을 한다.
-그래서 결국 버튼을 터치한경우 LoggedOutViewController 리스터의 함수를 호출하면 LoggedOutInteractor의 로직을 따르게 된다.
-LoggedOutInteractor 에 로그인 완료 리스너를 추가 한다. LoggedOutInteractor 에 이전에 작성한 login 함수의 구현을 변경하여 새로 선언 된 리스너 호출을 추가한다.
-RootInteractor에서 프로토콜을 업데이트하고 RootInteractor 클래스에 didLogin함수를 업데이트 한다.
+사용자로부터 이름을 입력 받기 전까지 Button을 disable 하는 부분은 LoggedOutPresentableListener 프로토콜을 따르도록 LoggedOutInteractor에서 수정을 한다.
+그래서 Button을 터치한 경우 LoggedOutViewController 함수를 호출하면 LoggedOutInteractor의 로직을 따르게 된다.
+
+이후 LoggedOutInteractor 에 로그인 완료 리스너를 추가 작성 한다. LoggedOutInteractor 에 이전에 작성한 login 함수의 구현을 변경하여 새로 선언 된 리스너 호출을 추가한다.
+마지막으로 Root Interactor에서 프로토콜을 업데이트하고 RootInteractor 클래스에 didLogin함수를 업데이트 한다.
 
 
 ## 결론
