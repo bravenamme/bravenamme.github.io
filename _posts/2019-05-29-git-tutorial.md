@@ -75,15 +75,11 @@ Ref.[https://nvie.com][git-branch-model]![fig4.git-flow 전략](/files/posts/git
 
 ### master branch(배포)
 배포 되었거나 배포준비(production-ready)된 코드는 `origin/master` 로 관리 합니다.
-git-flow 에서 master 브랜치에 `병합` 한다는 것은 새버전을 배포 한다는 것을 의미 합니다. master 브랜치에서 커밋될 때 git hook 스크립트를 걸어서 자동으로 빌드하여 운영서버로 배포하는 형식을 취하며 배포 방식은 프로젝트별로 차이가 있을 수 있으니 참고 바랍니다.
 
 ### develop branch(개발)
-다음 배포를 위한 개발 코드는 `origin/develop` 로 관리 합니다. 프로젝트에 참여하는 개발자들이 함께 업무를 진행하는 브랜치이며 develop 브랜치의 코드가 안정화되고 배포할 준비가 되면 `master`로 `병합` 하고 배포버전으로 태그를 달 수 있습니다.
 
-### feature, realease, hotfix branch(보조)
 배포를 준비하고, 이미 배포한 제품이나 서비스의 버그를 빠르게 해결(hotfix) 해야 합니다. 이 모든 것을 동시에 진행하기 위해서 다양한 브랜치가 필요 합니다.
 
-* ##### feature (기능 브랜치)  
 특정 기능을 개발할 때 사용하는 브랜치 입니다. 요구사항에 의해 develop 브랜치에서 생성되며 요구사항 별로 하나씩 생성하여 기능 개발후 develop 브랜치로 머지할 수 있습니다.  
 ``` 
   시작브랜치: develop  
@@ -93,7 +89,6 @@ git-flow 에서 master 브랜치에 `병합` 한다는 것은 새버전을 배�
 
 Ref.[https://nvie.com][git-branch-model]![fig5.feature branch](/files/posts/git-feature.png)
 
-* ##### release (출시/QA 브랜치)  
 `release` 브랜치는 실제 배포할 상태가 된 경우에 생성하는 브랜치 입니다. 해당 브랜치를 QA 에 전달해 최종 테스트를 수행할 수 있습니다. `master` 브랜치를 통해 배포 해야하므로 QA가 완료되면 `release`를 `master` 브랜치로 병합 합니다. (향후 관리를 위해 태그를 만들어 현재 병합되는 커밋을 가리킨다.) 이 때 배포된 기능에 반영될 수 있도록 `develop` 브랜치에도 함께 병합되어야 합니다.  
 ```
   시작브랜치: develop
@@ -101,7 +96,6 @@ Ref.[https://nvie.com][git-branch-model]![fig5.feature branch](/files/posts/git-
   브랜치이름 규칙: release-*
 ``` 
 
-* ##### hotfix 브랜치
 미리 계획되지 않은 배포를 위한 브랜치 입니다. 기본적인 동작 방식은 `release`와 비슷 합니다. 운영 버전에 치명적인 버그 발생시 빠른 해결을 위해 `master` 브랜치에 만들어 둔 `tag`로 부터 `hotfix` 브랜치를 생성 합니다.  
 ``` 
   시작브랜치: master
@@ -109,7 +103,6 @@ Ref.[https://nvie.com][git-branch-model]![fig5.feature branch](/files/posts/git-
   브랜치이름 규칙: hotfix-*
 ``` 
 
-Ref.[https://nvie.com][git-branch-model]![fig6.hotfix branch](/files/posts/git-feature.png)
 
 ***  
 
