@@ -54,7 +54,7 @@ dp와 pt는 픽셀 밀도와 관계 되는데 쉽게 말해 1pt 는 단말기의
 (상단 탭 메뉴의 가로 길이를 DP로 잡아두면 안된다.)
 
 ![출처 : https://brunch.co.kr/@creative/9](/files/posts/0804_app_design_07.png)
-고정영역과 가변영역을 잘 활용하면 해상도 대응이 된다.
+고정영역과 가변영역을 명시해 놓아야 여러 해상도에 대응을 할 수 있다.
 
 ### 3. 해상도별 에셋 제작의 어려움
 ![출처 : https://helpx.adobe.com/kr/xd/help/export-design-assets.html](/files/posts/0804_app_design_08.png)
