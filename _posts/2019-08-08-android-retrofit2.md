@@ -9,7 +9,7 @@ tags:	[android, kotlin, retrofit2, okhttp, https, ssl, SSLProtocolException]
 ## 인트로
 kotlin 개인 스터디 진행 중 어느 정도 기본 문법이 익숙해 지니 네트워크를 통한 데이터 취득을 해볼까?
 하는 마음에 네트워크 통신 라이브러리 검토 중 문득 팀동료에 메세지가 생각났다! 이번 포스팅은 retrofit2에대한 간략한 소개를 진행 합니다.
-![](/files/posts/201908/who.png)
+![](/files/posts/201908/who_.png)
 
 ## retrofit2
 retrofit2이란 okhttp + rxkotlin + json파싱 라이브러이가 혼합된 네트워크 통신 라이브러리 입니다.<br>
@@ -59,11 +59,11 @@ interface TestAPI {
 ## 성능
 retrofit2는 기본적으로 OkHttp를 네트워킹 계층으로 활용하며 그 위에 구축 됩니다.<br>
 탁월한 네트워크 성능이 보장 됩니다. 아래는 속도 테스트 진행 포스팅 입니다.
-![http://instructure.github.io/blog/2013/12/09/volley-vs-retrofit/](/files/posts/201908/tIdZkl3.png)
+![http://instructure.github.io/blog/2013/12/09/volley-vs-retrofit/](/files/posts/201908/tIdZkl3_.png)
 
 ## javax.net.ssl.SSLProtocolException
 retrofit 가이드 페이지 및 구글링을 통해 구현이 했지만 앱 크래시가 발생 했다!!!
-![](/files/posts/201908/boom.gif)
+![](/files/posts/201908/boom_.gif)
 
 원인은 테스트 진행한 open aip 서버에 보안 통신 https 가 적용 되어 있어서 였습니다!<br>
 해결 방안은 <b>[[okhttp HTTPS 클라이언트 설정]](https://square.github.io/okhttp/https/)</b> 부분에 관한 내용이 상세하게 정리 되어 있습니다.<br>
