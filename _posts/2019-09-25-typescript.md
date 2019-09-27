@@ -3,7 +3,7 @@ layout: post
 title:  "Typescript에 대하여"
 date:   2019-09-25 10:00
 author: maan
-tags:	[typescript, script, 웹트랜드]
+tags:	[typescript, script, web]
 ---
 
 ## 시작하며
