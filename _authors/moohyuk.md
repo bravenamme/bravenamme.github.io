@@ -1,6 +1,6 @@
 ---
 name: moohyuk
-title: 이무혁
-image: /files/authors/moohyuk2.jpg
+title: Ryan.Lee
+image: /files/authors/moohyuk.jpg
 email: lmhyuks@gmail.com
 ---
