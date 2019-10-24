@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "자바 잡설"
-date:   2019-10-16 12:00
+date:   2019-10-24 11:00
 author: azooasul
 tags:	[java]
 ---
