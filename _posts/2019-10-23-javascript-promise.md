@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "자바스크립트 콜백지옥 탈출기 - 1.영원한 사랑"
-date:   2019-10-23 10:00
+date:   2019-10-29 10:00
 author: firepizza
 tags:	[javascript, promise, async]
 ---
