@@ -33,8 +33,60 @@ tags:	[javascript, promise, async]
 ---
 
 
+단순하게 로직 흐름만을 생각한다면 아래와 같은 코드로 간단히 해결할 수 있을 것 같네요.
 ```javascript
-
-
+axios.get('/user')  // 유저 고유 ID를 얻고
+  .then((id) => {
+    axios.get(`/follow/${id}/channel/ABC`)  // 얻은 고유ID를 통해 팔로우 여부를 확인하고
+      .then((isFollowing) => {
+        if (isFollowing) {
+          axios.delete(`/follow/${id}/channel/ABC`) // 팔로우 중이라면 언팔로우한다.
+            .then(() => {
+              console.log('언팔로우 성공')
+            })
+        } else {
+          axios.put(`/follow/${id}/channel/ABC`)    // 팔로우 중이 아니라면 팔로우한다.
+            .then(() => {
+              console.log('팔로우 성공')
+            })
+        }
+      })
+  })
 ```
- 
+
+그러나 짐작 하셨겠지만, 위 코드는 다양한 문제점을 내포하고 있는데요.
+일단 제가 보기에는 이러한 문제가 있어 보이네요.
+> 1. Promise를 사용하는 axios 라이브러리를 사용했음에도 가독성이 좋지 않다. (콜백지옥)
+> 1. 비지니스 로직 흐름 사이에 다른 로직이 끼어들어야 하는 요구사항에 대응하기 어렵다. (유지보수 난이도 상승)
+> 1. 위 예제에서는 생략했지만, 각각의 호출에서 발생하는 예외상황에 대한 각기 다른 처리가 필요하다면 가독성과 유지보수 문제는 더 심각해 진다.
+
+
+## Promise를 최대한 활용해 리팩토링
+
+이전 시간에 언급했던 Promise의 특징으로는
+1. Promise는 연산 대리자이다.
+1. 각 연산의 handler를 연결할 수 있도록 하고 있다.
+
+가 있었는데요.
+
+axios를 사용한 비동기 호출 함수들 역시 [Promise를 리턴](https://github.com/axios/axios)하고 있기 때문에 위 특징을 활용해 리팩토링 해 보겠습니다.
+
+>1.5버전 이상의 jQuery.ajax 에서는 [jqXHR](https://api.jquery.com/Types/#jqXHR) 객체를 사용하고 있으나 내부적으로 Promise를 사용하기 때문에 활용 가능함.
+
+### 먼저 thenable 체인을 만들고.
+```javascript
+axios.get('/user')  // 유저 고유 ID를 얻고
+  .then((id) => {
+    return axios.get(`/follow/${id}/channel/ABC`)  // 얻은 고유ID를 통해 팔로우 여부를 확인하고
+  })
+  .then((isFollowing) => {
+    if (isFollowing) {
+      return axios.delete(`/follow/${id}/channel/ABC`) // 팔로우 중이라면 언팔로우한다.
+    } else {
+      return axios.put(`/follow/${id}/channel/ABC`)    // 팔로우 중이 아니라면 팔로우한다.
+    }
+  })
+  .then(() => {
+    console.log('팔로우 성공')
+  })
+```
