@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "자바스크립트 콜백지옥 탈출기 - 2....."
-date:   2019-11-01 10:00
+date:   2019-11-06 10:00
 author: firepizza
 tags:	[javascript, promise, async]
 ---
@@ -87,6 +87,77 @@ axios.get('/user')  // 유저 고유 ID를 얻고
     }
   })
   .then(() => {
-    console.log('팔로우 성공')
+    console.log('팔로우/언팔로우 성공')
   })
 ```
+
+### 가독성을 높이기 위해 함수단위로 리팩토링한다.
+```javascript
+function getUserId () {
+  return axios.get('/user')
+}
+
+function getIsFollowing (userId) {
+  return 
+    axios.get(`/follow/${userId}/channel/ABC`)
+      .then((isFollowing) => {
+        return { isFollowing, userId }
+      })
+}
+
+function toggleFollow (isFollowing, userId) {
+  const method = isFollowing ? 'delete' : 'put'
+  const msg = isFollowing ? '언팔로우 성공' : '팔로우 성공'
+  return 
+    axios.[method](`/follow/${userId}/channel/ABC`)
+      .then((result) => {
+        return { result, msg }
+      })
+}
+
+getUserId()
+  .then((id) => {
+    return getIsFollowing(id)
+  })
+  .then((res) => {
+    return toggleFollow(res.isFollowing, res.userId)
+  })
+  .then((res) => {
+    console.log(`${res.msg} 성공`)
+  })
+```
+
+위 2번의 리팩토링을 통해서, Promise를 사용해 체이닝을 하며 가독성 좋은 코드를 만들어 보았습니다.<br/>
+그런데 코드를 자세히 들여다 보면 어딘가 부자연스러운? 어색한? 부분이 있는 것 같습니다. 여러분은 어느 부분이 어색하게 느껴지시나요?<br/>
+<code>getIsFollowing()</code>함수를 다시 한번 봐 볼까요?
+이름으로 볼 때 팔로우 상태를 얻는 역할만을 해야 할 것 같은 함수인데.. 내용을 들여다 보면 그렇지 않죠. 팔로우상태를 얻은 다음 그 결과와 함께 다음 호출에서 사용하기 위한 userId를 결과에 주입해 리턴하고 있습니다.
+이번 예제에서는 바로 다음 then절에서 필요했기 때문에 간단해 보이지만, <code>getIsFollowing()</code> 이후에 userId가 필요없는 로직이 오거나 다음다음 then절에서 값이 필요하게 되는 경우를 상상해보면 복잡도가 점점 커진다는 걸 알 수 있습니다.
+
+그렇다면 이러한 요구사항(특정 Promise의 결과값을 다른 then절에서 재사용하고 싶다)을 해결하기 위해서 이런 의문이 들 수 있습니다.
+
+> 지나간 then절에서 사용된 Promise의 결과값은 미래에 나올 then절에서 재사용이 불가능한가?
+
+정답은... 그렇습니다. 아쉽게도 ECMAscript6 스펙에서는 위와 같은 방식 또는 지나간 then절에서 얻어낸 결과값을 전역변수로 캐시해두고 다음 then절에서 사용할 수 밖에 없습니다.
+
+예제에서는 간단한 데이터 하나만을 재사용하고 있기 때문에 저렇게 해도 되지 않나? 하는 생각이 들 수 있지만, 만약 전달해야 하는 데이터가 복잡하고 개수가 늘어난다면 어떨까요?
+
+그러면 일단 현존하는 문법과 기술은 무시하고 아래 코드와 같은 방법으로 비동기처리를 동기처리할 수는 없을까요?
+
+```javascript
+const userId = getUserId()
+const isFollowing = getIsFolowing(userId)
+toggleFollow(isFollowing)
+
+const msg = isFollowing ? '언팔로우 성공' : '팔로우 성공'
+console.log(msg)
+```
+
+위와 같은 처리가 가능하다면 훨씬 가독성 좋고, 개발하기 수월한 코드가 될 것만 같은 생각에 행복해집니다.
+
+제가 짧은기간이지만 주니어개발자로 개발을 하면서 깨달은 것 한가지를 소개해 드리고 싶은데요..
+
+> 내가 불편하다/있었으면 좋겠다.. 라고 생각하는 것이 있다면, 그 생각을 내가 세계최초로 한 사람은 아닐 것이며, 해결방법은 있을 것이다.
+
+마지막에 소개해드린 스타일로 처리하는 방법 역시 있고, 대중적이지는 않지만 조금씩 사용되고 있는 추세인 것 같습니다.
+
+다음 시간에는 async/await 라는 주제를 가지고 위 트위치 팔로우 예제를 조금 더 개선해 보겠습니다!
