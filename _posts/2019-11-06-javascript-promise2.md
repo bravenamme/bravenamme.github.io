@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  "자바스크립트 콜백지옥 탈출기 - 2....."
+title:  "자바스크립트 콜백지옥 탈출기 - 2.Promise의 활용"
 date:   2019-11-06 10:00
 author: firepizza
-tags:	[javascript, promise, async]
+tags:	[javascript, promise, async, es6]
 ---
 
 # Promise 
