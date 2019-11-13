@@ -3,7 +3,7 @@ email: singwoosun@gmail.com
 description: |
   치킨집 하지 말자.
 baseurl: ''
-url: 'https://bravenamme.github.io/'
+url: 'https://bravenamme.github.io'
 timezone: Asia/Seoul 
 
 repository: bravenamme/bravenamme.github.io
