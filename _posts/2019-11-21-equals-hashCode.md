@@ -28,28 +28,21 @@ tags:	[java]
 > ## equals()
 
 equals는 내용이 같은지를 검사하는 메서드.
-
 Primitive Type은 내용이 같은지 검사하고 Reference Type은 객체의 주소가 같은지 검사 한다.
-
 '==' 연산자와 다른 점은 완전히 같은 객체를 가리키지 않아도 개발자가 true로 만들 수 있다
 
 ![fig3. equal 을 이용한 비교](/files/posts/201911/fig3.png)
-
 ![fig4. equal 의 결과](/files/posts/201911/fig4.png)
 
 
 
 첫번째 equal 의 경우 주소도 같고 값도 같다. true 를 리턴한다.
-
 두번째 equal 의 경우 주소는 다르지만 값이 같다. true 를 리턴한다.
-
 아래의 예제의 경우 객체의 값이 같은데 어떤 결과가 노출되는지 확인해 보자.
-
 ![fig5. 예상과는 다른 상황](/files/posts/201911/fig5.png)
 
 
 결과는 '==' 연산자와 equals() 모두 false 를 리턴 했다. 
-
 자바는 해당 객체의 내용(값) 이 같은지 모르고 있었다. 개발자의 의도에 따라 name 만 같으면 같은 객체로 볼 수도 있고 경우에 따라 여러가지 경우가 존재하기 때문이다.
 
 equals() 를 제대로 사용하기 위해서는 method override를 통해 개발자의 의도에 맞게 재정의가 필요하다. (IDE 지원도구 또는 lombok plug-in 을 통해 편하게 생성 가능하다.)
