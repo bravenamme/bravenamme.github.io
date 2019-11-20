@@ -65,13 +65,13 @@ equals() 로 같은 객체라면 반드시 hashCode() 도 같아야 한다.
 
 > ## 언제 equals 와 hashCode 를 사용(override)하면  좋을까?
 
-Map은 get(key)를 통해 반복문 수행 없이 해당 key값이 등록되어 있는지 아닌지를 바로 확인 할 수 있습니다.  Map의 구현체인 HashMap이나 LinkedHashMap을 보면 바로 이 인스턴스의 hashCode 메소드 결과를 통해 key를 비교한다는 것을 확인 할 수 있습니다. 즉, 인스턴스의 hashCode 메소드 결과가 같다면 동일한 key로 간주하겠다는 것입니다
+Map은 get(key)를 통해 반복문 수행 없이 해당 key값이 등록되어 있는지 아닌지를 바로 확인 할 수 있다.  Map의 구현체인 HashMap이나 LinkedHashMap을 보면 바로 이 인스턴스의 hashCode 메소드 결과를 통해 key를 비교한다는 것을 확인 할 수 있다. 즉, 인스턴스의 hashCode 메소드 결과가 같다면 동일한 key로 간주하겠다는 의미이다
 
 ![](/files/posts/201911/fig6.png)
 ![fig6.7. Map 구현체 내부](/files/posts/201911/fig7.png)
  
 
-다음 예제의 Entity 내부의 데이터를 특정 키를 기준으로 분류해야 하는 일이 있을때 Map 과 hashCode() 를 사용하여 이 문제를 해결할 수 있습니다. 
+다음 예제와 같이 Entity 내부의 데이터를 특정 키를 기준으로 분류해야 하는 일이 있을때 Map 과 hashCode() 를 사용하여 이 문제를 해결할 수 있다. 
 
 ![](/files/posts/201911/fig8.png)
 ![](/files/posts/201911/fig9.png)
