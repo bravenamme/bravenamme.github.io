@@ -2,7 +2,7 @@
 layout: post
 title:  "GIT tutorial"
 date:   2019-06-11 10:00
-author: moohyuk
+author: ryan
 tags:	[git, git-flow]
 ---
 작성에 앞서 해당 POST 는 git 초보자를 위한 글 임을 밝힙니다.  
