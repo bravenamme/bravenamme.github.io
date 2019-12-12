@@ -175,8 +175,7 @@ new OrderedPair <String, Integer> 코드는 K를 문자열로, V를 정수로 �
     		//Number 타입 또는 하위 클래스 타입(Byte, Short, Integer, Long, Double)의 인스턴스만 가져야 한다.
             System.out.println("T: " + t.getClass().getName());
             System.out.println("U: " + u.getClass().getName());
-        }
-    
+        }    
 ```
 
 ```java
@@ -197,7 +196,8 @@ new OrderedPair <String, Integer> 코드는 K를 문자열로, V를 정수로 �
 제네릭 메소드는 매개타입과 리턴타입으로 타입파라미터를 갖는 메소드를 말한다. 
 
 > public <타입파라미터, ...> 리턴타입 메소드명(매개변수, ...) { ... }
-``` java
+
+```java
     public class Pair<K, V> {
         private K key;
         private V value;
