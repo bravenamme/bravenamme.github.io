@@ -17,7 +17,7 @@ tags:	[]
 
 ## mSQL
 
-![이젠 MySQL의 오타로 인식되어서 검색조차 쉽지 않다](/files/posts/msql.png)
+![이젠 MySQL의 오타로 인식되어서 검색조차 쉽지 않다](/files/posts/mSQL.png)
 
 mSQL 역시 기존에 사용하던 어떤 프로그램의 문제를 해결하기 위해 등장하였다. 그 프로그램이 무엇이냐면 Postgres 라고 하는, 지금도 MySQL과 더불어 오픈소스 RDB의 양대산맥인 PostgresSQL 의 그 Postgres 이다. 
 
