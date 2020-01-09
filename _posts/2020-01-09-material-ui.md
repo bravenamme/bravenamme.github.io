@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  Material UI For IOS
-date:   2020-01-03 10:00
+date:   2020-01-09 10:00
 author: sunyung
 ---
 ## 머터리얼 디자인이란?
@@ -103,7 +103,7 @@ author: sunyung
 ![짠 하고 슬라이더가 나온다](/files/posts/2020_01_09_image_04.png)
 
 
-자 그럼 아래 링크에서 하나씩 시작해보자.
+자 그럼 이제 아래 링크에서 시작해보자.!
 
 <https://material-ui.com>
 
