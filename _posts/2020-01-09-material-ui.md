@@ -26,12 +26,6 @@ author: sunyung
 또한 요즘에는 글로벌한 기업들이 Material Design을 많이 선호 하고 있으며, 그 안에서의 디자인의 포인트를 주는 것이 유행 처럼 번지고 있다.
 
 
-##  머터리얼 컴포넌트 소개(모바일)
-![출처 : https://github.com/material-components/material-components-ios](/files/posts/RPReplay_Final1578029693.MP4)
-![출처 : https://github.com/material-components/material-components-ios](/files/posts/RPReplay_Final1578030114.MP4)
-![출처 : https://github.com/material-components/material-components-ios](/files/posts/RPReplay_Final1578029829.MP4)
-![출처 : https://github.com/material-components/material-components-ios](/files/posts/RPReplay_Final1578029857.MP4)
-
 ##  머터리얼 컴포넌트 소개(웹)
 
 ![출처 : https://github.com/material-components/material-components-web](/files/posts/github_material_git_home2.png)
