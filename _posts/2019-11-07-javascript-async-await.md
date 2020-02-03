@@ -3,7 +3,7 @@ layout: post
 title:  "자바스크립트 콜백지옥 탈출기 - 3.async/await"
 date:   2019-11-07 10:00
 author: firepizza
-tags:	[javascript, promise, async, es6]
+tags:	[javascript, promise, async, es6, es8]
 ---
 
 # async/await
@@ -41,7 +41,7 @@ await 키워드는 async 함수에서만 유효하다는 것을 기억하십시�
 ---
 
 너무 길어서 왠지 복잡한 것 같지만 문장을 잠시 나누어 보자면 이렇게 볼 수 있겠네요.
-- 이 식은 async 함수의 실행을 일시 **중지**하고
+- 이 식(await)은 async 함수의 실행을 일시 **중지**하고
 - 전달된 Promise의 해결을 **기다린** 다음
 - async 함수의 실행을 **다시 시작**하고 완료후 값을 반환합니다.
 
@@ -54,4 +54,47 @@ await 키워드는 async 함수에서만 유효하다는 것을 기억하십시�
 
 어떤가요? 우리가 위에서 고민했던 순차적인 비동기호출을 동기적으로 수행할 수 있을 것만 같은 느낌이 들지 않나요?
 
+그렇다면 한번 이전 코드에 async/await 구문을 적용시켜 보도록 하겠습니다.
+
+
+```javascript
+function getUserId () {
+  return 
+    axios.get('/user')
+         .then(r => { return r.userId });
+}
+
+function getIsFollowing (userId) {
+  return 
+    axios.get(`/follow/${userId}/channel/ABC`)
+         .then(r => { return r.isFollowing })
+}
+
+function toggleFollow (isFollowing, userId) {
+  const method = isFollowing ? 'delete' : 'put'
+  const msg = isFollowing ? '언팔로우 성공' : '팔로우 성공'
+  
+  return
+    axios.[method](`/follow/${userId}/channel/ABC`)
+         .then(r => {
+           return { r, msg }
+         })
+}
+
+
+async function execute() {
+  const userId = await getUserId()
+  const isFollowing = await getIsFollowing(userId)
+  const result = await toggleFollow(isFollowing)
+  console.log(result.msg)
+}
+
+execute()
+```
+
+어떤가요? 보기에도 훨씬 간단하고 직관적인 코드가 되었습니다.
+
+이처럼 async/await 구문을 활용하면 가독성 높은 코드를 생산할 수 있다는 장점이 있지만, 반대로 async/await에 익숙하지 않은 개발자와 협업하는 경우에는 오히려 생산성을 해칠 수 있습니다.
+
+개발을 진행하기에 앞서 어떤 컨벤션을 가지고 진행할 것인지를 먼저 정하고 진행하는 것이 좋을 것 같다는 생각이 드네요^^
 
