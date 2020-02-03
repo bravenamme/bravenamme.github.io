@@ -1,6 +1,6 @@
 ---
-name: moohyuk
+name: ryan
 title: Ryan.Lee
-image: /files/authors/moohyuk.jpg
+image: /files/authors/ryan.jpg
 email: lmhyuks@gmail.com
 ---
