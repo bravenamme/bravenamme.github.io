@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  React Native UX
-date:   2020-02-20 16:00
+date:   2020-03-04 15:00
 author: sunyung
 ---
 ## React Native 환경 설정
