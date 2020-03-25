@@ -1,7 +1,7 @@
 ---
 proplayout: post
 title:  Springboot Actuator
-date:   2020-03-19 14:00
+date:   2020-03-26 14:00
 author: juhyun10
 tags:	[springboot-actuator,spring-monitoring,actuator,spring-admin-ui]
 ---
