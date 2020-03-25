@@ -328,17 +328,16 @@ public class ActuatorApplication {
 
 
 
-![Springadmin 첫 화면](D:\04_STUDY\02_bravenamme\files\posts\202003\adminui01.JPG)
+![Springadmin 첫 화면](/files/posts/202003/adminui01.JPG)
 
 
 
 
-
-![Springadmin 대시보드](D:\04_STUDY\02_bravenamme\files\posts\202003\adminui02.JPG)
-
+![Springadmin 대시보드](/files/posts/202003/adminui02.JPG)
 
 
-![Springadmin로 덤프파일도 받을 수 있어요!](D:\04_STUDY\02_bravenamme\files\posts\202003\adminui03.JPG)
+
+![Springadmin로 덤프파일도 받을 수 있어요!](/files/posts/202003/adminui03.JPG)
 
 
 
