@@ -33,7 +33,7 @@ MSA (MicroService Architecture) 대해 검토를 하다 보면 분산 시스템�
 
 본 예제는 아래와 같은 흐름으로 진행이 됩니다.
 
-![그림으로 이해하는 API 호출 흐름](D:\04_STUDY\02_bravenamme\files\posts\202006\0618_흐름.JPG)
+![그림으로 이해하는 API 호출 흐름](\files\posts\202006\0618_흐름.JPG)
 
 
 
@@ -70,7 +70,7 @@ public class ProviderController {
 
 #### 프로젝트 생성
 
-![springboot project 생성 - Consumer](D:\04_STUDY\02_bravenamme\files\posts\202006\0618_프로젝트설정.JPG)
+![springboot project 생성 - Consumer](\files\posts\202006\0618_프로젝트설정.JPG)
 
 ```xml
  <dependency>
@@ -137,7 +137,7 @@ public class ConsumerController {
 
 
 
-![Consumer API 호출](D:\04_STUDY\02_bravenamme\files\posts\202006\0618_api.JPG)
+![Consumer API 호출](\files\posts\202006\0618_api.JPG)
 
 
 
