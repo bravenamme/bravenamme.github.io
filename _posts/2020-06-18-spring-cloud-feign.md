@@ -16,7 +16,7 @@ tags:	[springcloud-feign,MSA,feign]
 
 # SpringCloud Feign 이란
 
-MSA (MicroService Architecture) 대해 검토를 하다 보면 분산 시스템에 최적화된 여러 가지 라이브러리들이소개가 되는데 그 중 하나인 Feign 에 대해 다룹니다.
+MSA (MicroService Architecture) 대해 검토를 하다 보면 분산 시스템에 최적화된 여러 가지 라이브러리들이 소개가 되는데 그 중 하나인 Feign 에 대해 다룹니다.
 
 
 
