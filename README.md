@@ -1,6 +1,8 @@
 용감한 남매들 Tech Blog
 ====================
 
+https://bravenamme.github.io
+
 ### push 권한 요청
 push 권한 요청 메일 전송
 * 수신자 이메일 : singwoosun@gmail.com
