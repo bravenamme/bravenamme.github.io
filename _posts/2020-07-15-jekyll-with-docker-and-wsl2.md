@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "jekyll 블로그 wsl2 + docker + vscode 에서 작업하기"
-date:   2020-07-15 15:48
+date:   2020-07-15 16:08
 author: monoless
 tags:	[jekyll, wsl2, docker, windows, linux, vscode]
 ---
