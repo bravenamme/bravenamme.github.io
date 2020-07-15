@@ -1,0 +1,10 @@
+version: "3.3"
+
+services:
+  blog:
+    image: jekyll/jekyll:latest
+    command: jekyll serve --force_polling --drafts --livereload --trace
+    ports:
+      - "4000:4000"
+    volumes:
+      - ".:/srv/jekyll"
