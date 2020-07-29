@@ -2,7 +2,7 @@
 layout: post
 title:  "Flutter 개발 환경 설정"
 date:   2020-07-30 08:00
-author: tbzmtb
+author: sunyung
 ---
 
 ## Flutter 란?
@@ -24,15 +24,18 @@ author: tbzmtb
 SDK를 다운로드 후 아래 명령어를 실행한다.
 
     cd ~/development
-    unzim ~/Downloads/flutter_macos_1.17.5-stable.zip
+    unzip ~/Downloads/flutter_macos_1.17.5-stable.zip
 
 path 설정
+
     export PATH="$PATH:'pwd'/flutter/bin"
 
 바이너리 다운로드
+
     flutter precache
 
 Doctor 실행
+
     flutter doctor
 
 이 명령은 환경을 체크하고 보고서를 터미널에 보여준다. 
@@ -55,7 +58,8 @@ Flutter 앱 실행
     cd my_app
     flutter run
 
-CocoaPods 설치
+IOS CocoaPods 설치
+
     sudo gem install cocoapods
     pod setup
 
@@ -64,12 +68,16 @@ CocoaPods 설치
 개인 취향에 맞는 에디터를 사용하면 될 것 같다.
 
 ### 외부 패키지 이용하기
-안드로이드 스튜디오를 이용중이라면 편집기 화면에서 pubspec.yaml 수정한다.
-그리고 packages get 를 클릭하면 끝이다.
+안드로이드 스튜디오를 이용중이라면 편집기 화면에서 pubspec.yaml 에 dependancy를 추가하고 packages get 를 클릭하면 끝이다.
+
+이전과 다르게 pub.dev에 오픈 소스가 상당히 많다.!! (많이 발전했구나 ㅜㅜ)
 
 ### 빌드
-리액트 네이티브를 다룰때만 하더라도 안드로이드 스튜디오에서는 아이폰 단말기에 직접 빌드가 안되었는데 .. 플루터는 가능하다.
-단말기를 연결하면 아래와 같이 프로비져닝을 안드로이드 스튜디오에서 체크한다.
+리액트 네이티브를 다룰때만 하더라도 안드로이드 스튜디오에서는 아이폰 단말기에 직접 빌드가 안되었는데 플루터는 가능하다.
+
+단말기를 연결하면 아래와 같이 프로비져닝을 안드로이드 스튜디오에서 체크하고 빌드까지 직접 해준다.
+
+물론 프로비저닝 프로파일은 따로 설정해둬야한다.
 ![](/files/posts/20200728/1.png)
 
 
@@ -85,6 +93,6 @@ CocoaPods 설치
 
 ### 결론
 하이브리드를 개인적으로 지향하지는 않지만 플루터로 한번쯤을 앱을 제작해보고 싶다는 생각이 든다.
-과연 네이티브보다 얼마나 효율적일지 단점은 무엇인지.. 다음시간에 포스팅 하도록 해보겠다.
 
+과연 네이티브보다 얼마나 효율적일지 단점은 무엇인지...
 
