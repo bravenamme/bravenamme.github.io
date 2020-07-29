@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Flutter 개발 환경 설정"
-date:   2020-07-21 10:00
+date:   2020-07-30 08:00
 author: tbzmtb
 ---
 
@@ -9,6 +9,7 @@ author: tbzmtb
 
 
 지난번에 Flutter 에 대한 간략한 소개를 보고 급 관심이 생겨서 이번에 개발환경 설정까지 진행해 보았다.
+
 소개글을 보실분은 다음 링크로 ...
 <https://bravenamme.github.io/2020/07/01/flutter/>
 
