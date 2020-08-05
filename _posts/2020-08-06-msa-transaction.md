@@ -71,8 +71,8 @@ Choreography-based SAGA는 위와 같이 재고 차감이 완료되면 배송서
 
 ### Orchestration-based SAGA
 
-![8. Orchestration-based SAGA, 출처: https://blog.couchbase.com/saga-pattern-implement-business-transactions-using-microservices-part-2/
-](/files/posts/20200807/007.png)
+![출처: https://blog.couchbase.com/saga-pattern-implement-business-transactions-using-microservices-part-2/
+](/files/posts/20200807/008.png)
 
 Orchestration-based SAGA는 SAGA Orchestrator에서 각 서비스에게 호출하여 트랜잭션을 관리하는 방식입니다.
 
@@ -82,7 +82,7 @@ Orchestration-based SAGA는 SAGA Orchestrator에서 각 서비스에게 호출�
 4. Orchestrator는 배달 명령을 Delivery 서비스로 보내고, 주문 배달 메세지로 응답합니다.
 5. 모든 응답이 완료되면 트랜잭션을 종료합니다.
 
-![9. Orchestration-based SAGA Rollback, 출처: https://blog.couchbase.com/saga-pattern-implement-business-transactions-using-microservices-part-2/](/files/posts/20200807/007.png)
+![출처: https://blog.couchbase.com/saga-pattern-implement-business-transactions-using-microservices-part-2/](/files/posts/20200807/009.png)
 
 롤백 과정을 살펴 보면
 
