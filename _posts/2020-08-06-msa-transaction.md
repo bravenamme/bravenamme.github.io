@@ -68,16 +68,48 @@ Choreography-based SAGA는 위와 같이 재고 차감이 완료되면 배송서
 
 결재가 취소되는 방식으로 관리됩니다.
 
+
 ### Orchestration-based SAGA
 
+![8. Orchestration-based SAGA, 출처: https://blog.couchbase.com/saga-pattern-implement-business-transactions-using-microservices-part-2/
+](/files/posts/20200807/007.png)
+
+Orchestration-based SAGA는 SAGA Orchestrator에서 각 서비스에게 호출하여 트랜잭션을 관리하는 방식입니다.
+
+1. 주문 서비스가 주문을 저장을 하고, SAGA Orchestrator 에게 트랜잭션을 시작하도록 요청합니다.
+2. Orchestrator는 지불 명령을 Payment 서비스로 보내고, 지불 완료 메세지로 응답합니다.
+3. Orchestrator는 주문 준비 명령을 Order 서비스로 보내고, 주문 준비 메세지로 응답합니다.
+4. Orchestrator는 배달 명령을 Delivery 서비스로 보내고, 주문 배달 메세지로 응답합니다.
+5. 모든 응답이 완료되면 트랜잭션을 종료합니다.
+
+![9. Orchestration-based SAGA Rollback, 출처: https://blog.couchbase.com/saga-pattern-implement-business-transactions-using-microservices-part-2/](/files/posts/20200807/007.png)
+
+롤백 과정을 살펴 보면
+
+1. Stock 서비스에서 품절 메세지를 Orchestrator에 전달합니다.
+2. Orchestrator에서 롤백을 시작합니다.
+3. Orchestrator는 환불 명령을 Payment 서비스로 보내고, 주문실패 상태로 변경합니다.
+
+Orchestration-based SAGA는 트랜잭션을 Orchestrator 집중해서 관리 할 수 있으므로,
+
+복잡도가 줄어들어 롤백을 쉽게 관리할수 있고, 구현 및 테스트가 용이합니다.
+
+그러나 Orchestrator에 모든 트랙잭션이 집중되어 로직이 복잡해 질 수 있고,
+
+Orchestrator 추가로 인한 인프라도 고려해야 합니다.
 
 
 
 
 참조
+
 https://cla9.tistory.com/22
+
 https://www.howtodo.cloud/microservice/2019/06/19/microservice-transaction.html
+
 https://microservices.io/patterns/data/saga.html
+
+https://blog.couchbase.com/saga-pattern-implement-business-transactions-using-microservices-part-2/
 
 
 
