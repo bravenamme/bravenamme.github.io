@@ -11,19 +11,26 @@ tags:	[MSA,spring-cloud-config-server,spring-cloud-bus]
 관련 소스는 [github/juhyun10](https://github.com/juhyun10/msa-springcloud) 를 참고바란다.
 
 앞으로 연재 방식으로 아래 컴포넌트들에 대해 포스팅을 할 예정이다.
->***Spring Cloud Config Server - 환경설정 외부화 및 중앙 집중화***<br />
+>***1.Spring Cloud Config Server - 환경설정 외부화 및 중앙 집중화***<br />
 >   - Spring Cloud Config Server
 >   - 컨피그 서버 구축
 >       - 컨피그 서버 셋업
->       - 저장소 구현
+>       - 저장소(Git or File) 구현 - File
 >   - 클라이언트에서 컨피그 서버 접근
 >   - 컨피그 서버에서 환경설정 변경값 갱신
 >   - 환경설정 변경 전파
->       - 환경설정 변경 전파 적용<br />
+>       - RabbitMQ 설치
+>       - 환경설정 변경 전파 적용
+>   - 컨피스 저장소의 중요 정보 보호(암호화)
+>       - 암호화에 필요한 오라클 JCE 파일을 내려받아 설치
+>       - 암호화 키 설정
+>       - 프로퍼티를 암호화 및 복호화
+>       - 클라이언트 측에서 암호화하도록 마이크로서비스 구성
+>   - 저장소(Git or File) 구현 - Git<br />
 >
->Zuul - Proxy & API Gateway<br />
->Ribbon - Load Balancer<br />
->Eureka - Service Registry & Discovery
+> 2.Eureka - Service Registry & Discovery
+> 3.Zuul - Proxy & API Gateway<br />
+> 4.Ribbon - Load Balancer<br />
 
 다양한 요청을 처리하는 마이크로서비스를 관리하기 위해서 스프링 부트 프레임워크가 제공하는 기능만으로는 충분하지 않다.
 스프링 클라우드 프로젝트는 마이크로서비스 개발에 필요한 공통적인 패턴들을 모아서 사용하기 쉬운 스프링 라이브러리형태로 구현해서 제공한다.
@@ -32,7 +39,7 @@ tags:	[MSA,spring-cloud-config-server,spring-cloud-bus]
 [여기](https://bravenamme.github.io/2020/07/21/msa-netflix/)에서 개념 확인이 가능하다.
 
 
-# Spring Cloud Config Server
+# 1. Spring Cloud Config Server
 Spring Cloud Config Server(이하 컨피그 서버)는 애플리케이션과 서비스의 모든 환경설정 속성 정보를 저장, 조회, 관리할 수 있게 해주는 외부화된 환경설정 서버이다.
 * 환경 설정 속성 정보 : 데이터베이스, 미들웨어 접속 정보, 애플리케이션의 행동 양식을 정하는 메타데이터 등...<br />
 이전 그리고 아직도 많은 방식으로 운영되고 있는 환경설정방식은 아래와 같다.
@@ -86,8 +93,8 @@ Spring Cloud Config Server(이하 컨피그 서버)는 애플리케이션과 서
 ![*.properties와 *.yaml 차이](/files/posts/20200808/yaml.png)
 </details>
 
-# 컨피그 서버 구축
-## 1. 컨피그 서버 셋업
+# 2. 컨피그 서버 구축
+## 2-1. 컨피그 서버 셋업
 새로운 스트링부트 프로젝트 생성 후 Config Server Dependency 를 추가한다.
 actuator는 서버 구동 확인용으로 사용할 예정이다.
 actuator에 대한 간단한 설명은 이전 포스트인 [여기](https://bravenamme.github.io/2020/03/26/spring-actuator/)를 참고하길 바란다.
@@ -117,7 +124,7 @@ actuator에 대한 간단한 설명은 이전 포스트인 [여기](https://brav
     <artifactId>spring-boot-starter-actuator</artifactId>
 </dependency>
 ```
-## 2. 저장소(Git) 구현
+## 2-2. 저장소(Git or File) 구현 - File
 지금은 로컬 파일 시스템 기반의 저장소로 연결하고 원격 저장소로의 연결은 마지막에 구현할 예정이다.
 저장소로 사용할 폴더 생성 후 컨피그 서버가 방금 만든 저장소를 사용하도록 설정한다.
 application.properties의 이름을 bootstrap.yaml 으로 변경 후 아래와 같이 설정한다.
@@ -128,16 +135,6 @@ application.properties의 이름을 bootstrap.yaml 으로 변경 후 아래와 �
 spring:
   application:
     name: configserver
-  cloud:
-    config:
-      server:
-        encrypt:
-          enabled: false
-
-# applicaton.yaml
-server:
-  port: 8889    # 컨피그 서버가 수신 대기하는 포트
-spring:
   profiles:
     active: native
   cloud:
@@ -145,6 +142,10 @@ spring:
       server:
         native:
           search-locations: file:C:/myhome/03_Study/13_SpringCloud/assucloud/config-repo/member-service
+
+# applicaton.yaml
+server:
+  port: 8889    # 컨피그 서버가 수신 대기하는 포트
 management:
   endpoints:
     web:
@@ -168,7 +169,7 @@ mvn spring-boot:run
 ![컨피그 서버 구동 확인](/files/posts/20200808/actuator.png)
 
 
-# 클라이언트에서 컨피그 서버 접근
+# 3. 클라이언트에서 컨피그 서버 접근
 위에서 컨피그 서버를 구성 후 웹 브라우저를 통해 접근하는 방법을 보았으니, 이제 마이크로서비스가 컨피그 클라이언트로서 컨피그 서버에
 접근하도록 한다.
 
@@ -250,7 +251,7 @@ public class MemberController {
 }
 ```
 
-`mvn spring-boot:run` 으로 컨피그 서버 기동 후 각각 아래의 주소로 접속하면 각 프로파일에 맞는 JSON 페리로드가 반환되는 것을 알 수 있다.
+`mvn spring-boot:run` 으로 컨피그 서버 기동 후 각각 아래의 주소로 접속하면 각 프로파일에 맞는 JSON 페이로드가 반환되는 것을 알 수 있다.
 
 [http://localhost:8889/member-service/default/](http://localhost:8889/member-service/default/)
 
@@ -271,7 +272,7 @@ Actuator 를 이용하여 현재 실행중인 환경 정보를 확인할 수 있
 ![컨피그 서버로부터 전달받은 설정값](/files/posts/20200808/membername.png)
 
 
-# 컨피그 서버에서 환경설정 변경값 갱신
+# 4. 컨피그 서버에서 환경설정 변경값 갱신
 저장소의 프로퍼티를 변경하면 컨피그 서버는 항상 최신 버전의 프로퍼티를 제공한다.
 하지만 애플리케이션은 기동시에만 프로퍼티를 읽어오는데 이 때 actuator 의 `@RefreshScope` 를 사용하여
 `/actuator/refresh` 엔드 포인트를 호출함으로써 애플리케이션 재기동없이 프로퍼티를 다시 읽어올 수 있다.
@@ -304,10 +305,11 @@ your.name: "ASSU ASSU DEFAULT Modify"
 ![프로퍼티값 갱신](/files/posts/20200808/refresh.png)
 
 
+
 ![회원서비스에서의 확인](/files/posts/20200808/refresh2.png)
 
 
-# 환경설정 변경 전파
+# 5. 환경설정 변경 전파
 위에 기술한 것처럼 `/actuator/refresh` 종단점을 호출하여 환경설정값을 갱신해도 되지만 인스턴스가 수가 많아지면
 환경설정 정보가 변경될 때마다 인스턴수의 수만큼 종단점을 호출해줘야 한다.
 이에 대한 해결 방법으로는 두 가지가 있다.
@@ -329,8 +331,33 @@ Spring Cloud Bus (이하 클라우드 버스) 는 현재 실행되고 있는 인
 
 가장 많이 사용되고 있다는 RabbitMQ를 [AMQP(Advanced Message Queuing Protocol)](https://ko.wikipedia.org/wiki/AMQP) 메시지 브로커로 사용할 예정이다.
 
-## 1. 환경설정 변경 전파 적용
-[여기](http://www.rabbitmq.com/download.html) 에서 RabbitMQ를 다운로드 받은 후 클라우드 버스 Dependency를 추가한다.
+## 5-1. RabbitMQ 설치
+[여기](http://www.rabbitmq.com/download.html) 에서 RabbitMQ를 다운로드 받은 후 관리자 모드로 명령창을 열어 아래와 같이 입력한다.
+
+![RabbitMQ 서비스 실행](/files/posts/20200808/rabbitmq.png)
+
+```shell
+-- rabbitMQ 플러그인 활성화
+C:\rabbitmq_server-3.8.6\sbin>rabbitmq-plugins enable rabbitmq_management
+
+-- rabbitMQ 서비스 중지
+C:\rabbitmq_server-3.8.6\sbin>rabbitmq-service.bat stop
+
+-- rabbitMQ 서비스 설치
+C:\rabbitmq_server-3.8.6\sbin>rabbitmq-service.bat install
+
+-- rabbitMQ 서비스 재기동
+C:\rabbitmq_server-3.8.6\sbin>rabbitmq-service.bat start
+```
+
+RabbitMQ 매니지먼트 사이트인 http://localhost:15672/ 에 접속하여 잘 기동되었는지 확인할 수 있다.
+참고로 guest 계정은 로컬호스트에서만 동작한다. 
+
+![RabbitMQ 매니지먼트](/files/posts/20200808/rabbitmq_mng.png)
+
+
+## 5-2. 환경설정 변경 전파 적용
+클라우드 버스 Dependency를 추가한다.
                                                                                            
 ```xml
 <dependency>
@@ -363,45 +390,180 @@ your.name: "ASSU ASSU DEFAULT Modify!!"
 
 이후 특정 한 인스턴스의 `/actuator/bus-refresh` 종단점을 호출하여 변경된 환경설정값이 모든 인스턴스에 적용되는지 확인해보자.
 
-![port 8090의 /actuator/bus-refresh 호출](/files/posts/20200808/bus.png)  
+![port 8090의 /actuator/bus-refresh 호출](/files/posts/20200808/bus.png)
+
 
 
 ![port 8090 확인](/files/posts/20200808/8090.png) 
 
 
+
 ![port 8091 확인](/files/posts/20200808/8091.png) 
 
 클라우드 버스 종단점(`/actuator/bus-refresh`) 은 메시지 브로커에게 내부적으로 메시지를 전송하는데,
-이 메시지는 결국 모든 인스턴스가 각자의 환경설정 정보를 최신 내용으로 갱신할 수 있게 한다.
+이 메시지는 결국 모든 인스턴스가 각자의 환경설정 정보를 최신 내용으로 갱신할 수 있게 한다.<br />
 위에서 보다시피 port 8090의 `/actuator/bus-refresh` 종단점만 호출하면 같은 클라우드 버스에 연결되어 있는
 port 8091 인스턴스까지 변경된 환경설정값이 갱신되는 것을 확인할 수 있다.
 
+# 6. 컨피스 저장소의 중요 정보 보호(암호화)
+컨피그 저장소에는 데이터베이스 자격 증명과 같은 중요 정보도 함께 저장이 되는데 이를 평문으로 저장하는 것은 매우 위험하다.
+컨피그 서버는 중요한 프로퍼티를 쉽게 암호화할 수 있는 대칭 암호화(공유 비밀키 사용), 비대칭 암호화(공개, 비공개 키 사용)를 모두 지원한다.
+여기서는 대칭 키를 사용해 암호화하는 컨피그 서버 설정 방법을 알아볼 것이다.
 
-★정보보호
-★git 
+전체적인 순서는 아래와 같다.
 
-```shell
--- RabbitMQ 실행
-rabbitmq_server-3.8.6\sbin> ./rabbitmq-server
-``` 
+암호화에 필요한 오라클 JCE jar 파일을 내려받아 설치<br /> → 암호화 키 설정<br /> → 프로퍼티를 암호화 및 복호화<br /> → 클라이언트 측에서 암호화하도록 마이크로서비스 구성
 
-
+## 6.1. 암호화에 필요한 오라클 JCE(Unlimited Stength Java cryptography Extension) jar 파일을 내려받아 설치
+오라클 JCE는 메이븐으로 할 수 없으므로 [오라클 사이트](https://www.oracle.com/java/technologies/javase-jce-all-downloads.html)에 접속하여 직접 내려받은 후
+$JAVA_HOME/lib/security 디렉터리로 local_policy.jar 와 US_export_policy.jar 로 복사한다.
 
 
+## 6.2. 암호화 키 설정
+대칭 암호화키는 암호화/복호화에 사용되는 공유된 비밀키이다.
+컨피그 서버에서 사용되는 대칭 암호화키는 ENCRYPT_KEY 라는 운영 체제의 환경 변수를 사용하여 텍스트 파일에서 제외시킬수도 있고,
+encrypt.key를 문자열로 설정하여 사용할 수도 있다.
 
+여기에서는 실무에서 많이 사용되는 방식인 운영 체제의 환경 변수를 사용하여 대칭 암호화키를 설정할 것이다.
+아래 그림처럼 환경 변수 설정 후엔 PC를 재시작해야 한다.
+
+![환경변수로 암호화키 설정](/files/posts/20200808/encrypt_key.png)
+ 
+***암호화키는 환경별로 다른 암호화키를 사용하고 랜덤 문자열을 키로 사용하는 것을 권장한다.***
+
+
+## 6.3. 프로퍼티를 암호화 및 복호화
+위 과정을 하면 컨피그 서버에 사용되는 프로퍼티를 암호화할 준비가 된 것이다.
+이제 rabbitMQ의 패스워드를 암호화할 것이다.
+
+컨피그 서버 인스턴스가 실행될 때 ENCRYPT_KEY 환경 변수가 설정되었음을 감지하면 2개의 새로운 종단점 `/encrypt`와 `decrypt` 가 컨피그 서비스에 자동으로 추가된다.
+`/encrypt` 종담점을 사용해 평문 패스워드를 암호화한다.
+ 
+![환경변수 ENCRYPT_KEY가 없는 경우](/files/posts/20200808/before_encrypt_key.png)
+
+
+
+![환경변수 ENCRYPT_KEY가 있는 경우 패스워드 암호화 결과](/files/posts/20200808/encrypt.png)
+
+
+암호화된 패스워드는 아래와 같이 `/decrypt` 종단점을 호출하여 복호화한다.
+
+![패스워드 복호화 결과](/files/posts/20200808/decrypt.png)
+
+
+`/decrypt` 종단점을 호출 시 잘못된 암호화된 패스워드를 넣으면 아래와 같은 결과를 리턴한다.
+
+![잘못된 패스워드 복호화 결과](/files/posts/20200808/decrypt2.png)
+
+
+컨피그 서버에서는 모든 암호화된 프로퍼티 값 앞에 `{cipher}` prefix 를 붙여준다.
+`{cipher}` 는 컨피그 서버에 암호화된 값을 처리하도록 지시한다.
+
+컨피그 저장소의 member-service.yaml 내용을 아래와 같이 변경한다.
+```properties
+your.name: "ASSU ASSU DEFAULT Modify"
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: '{cipher}48540a4be82e2b8fb364198d34bc24ee2970890a6264ed59afa4aad0b620cc3a'
+#    password: guest
+```            
+
+제대로 반영이 되었는지 http://localhost:8889/member-service/default/ 를 호출하여 확인할 수 있다.
+
+![평문 전달](/files/posts/20200808/cipher.png) 
+
+프로퍼티를 암호화 하여 보안을 강화했지만 화면을 보면 http://localhost:8889/member-service/default/ 종단점 호출 시엔 평문으로 나타난다.
+
+기본적으로 컨피그 서버에서는 모든 프로퍼티의 복호화를 수행하고, 그 결과를 프로퍼티를 사용하는 애플리케이션에 평문으로 전달한다.
+안전하게 컨피그 서버가 복호화하지 않고 애플리케이션이 암호화된 프로퍼티를 복호화하도록 설정해보자.
+
+## 6.4. 클라이언트 측에서 암호화하도록 마이크로서비스 구성
+
+컨피그 서버의 bootstrap.yaml 에 아래 내용을 추가한다.
+```yaml
+# 컨피그 서버의 bootstrap.yaml
+spring:
+  application:
+    name: configserver
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:C:/myhome/03_Study/13_SpringCloud/assucloud/config-repo/member-service
+        encrypt:
+          enabled: false        # 컨피그 서버 측 복호화 프로퍼티 비활성화
+```
+
+회원 마이크로서비스에 spring-security-rsa Dependency 를 추가한다.
+spring-security-rsa 는 컨피그 서버에서 전달된 암호화된 프로퍼티를 복호화할 수 있도록 해준다.
+
+```xml
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-rsa</artifactId>
+</dependency>
+```
+
+![암호화된 값으로 전달](/files/posts/20200808/cipher2.png)
+
+
+# 7. 저장소(Git or File) 구현 - Git
+이제 로컬 파일기반의 저장소를 원격 저장소로 변경해볼 것이다.
+원격 저장소를 만든 후 컨피그 서버의 bootstrap.yaml 을 아래와 같이 변경해준다.
+
+```yaml
+spring:
+  application:
+    name: configserver
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/juhyun10/config-repo.git
+          username: juhyun10
+          password: '{cipher}f38ff3546220bbac52d81c132916b1b1fd7cfsdfdsfds60d1c4bf0b4ee97c'
+          search-paths: member-service    # 구성 파일을 찾을 폴더 경로
+        encrypt:
+          enabled: false
+
+#file 기반 저장소 설정
+#spring:
+#  application:
+#    name: configserver
+#  profiles:
+#    active: native
+#  cloud:
+#    config:
+#      server:
+#        native:
+#          search-locations: file:C:/myhome/03_Study/13_SpringCloud/assucloud/config-repo/member-service
+#        encrypt:
+#          enabled: false
+```
+
+실제 잘 동작하는지는 저장소 설정값을 변경한 후 [http://localhost:8090/actuator/bus-refresh](http://localhost:8090/actuator/bus-refresh) 를 호출하여 
+환경 설정 변경값을 전파하여 변경된 값이 잘 전파되었는지 확인하면 된다.
  
 
  
 # 마치며 
-MSA 구성은 기존 monolithic 구조와 비교해서 결코 심플하지 않다.  
-하나의 서비스를 잘게 쪼갬으로써, 서비스간 복잡도가 증가 될수 있으머, 라우터, Circuit breaker,  
-각 서비스들의 관리등 고려해야 할 것들이 기존보다 더 많아질수도 있다.  
-그럼에도 불구하고 서비스들을 나누고 권한을 위임하면서, 고가용성, 유연한 스케일링, 빠르고 쉬운 배포 등의  
-큰 장점들이 있기 때문에 협업 부서가 많거나 규모가 좀 있는 시스템이라면 충분히 고려해 볼 만한 가치가 있다.
+컨피그 서버를 사용하여 애플리케이션 구성 데이터를 애플리케이션과 완전히 분리하는 방법을 알아보았다.
+다음엔 서비스 등록 및 발견을 지원하는 Service Discovery Eureka 에 대해 알아보도록 하겠다.
   
 
 # 참고 사이트
+* [스프링 마이크로서비스 코딩공작소](https://thebook.io/006962/)
+* [https://cloud.spring.io/spring-cloud-config/reference/html/](https://cloud.spring.io/spring-cloud-config/reference/html/)
+* [암호화 키 설정 1](https://cloud.spring.io/spring-cloud-config/reference/html/#_key_management)
+* [암호화 키 설정 2](https://stackoverflow.com/questions/37404703/spring-boot-how-to-hide-passwords-in-properties-file)
+* [암호화 키 설정 3](https://cnpnote.tistory.com/entry/SPRING-Spring-%EB%B6%80%ED%8C%85-%EC%86%8D%EC%84%B1-%ED%8C%8C%EC%9D%BC%EC%97%90%EC%84%9C-%EC%95%94%ED%98%B8%EB%A5%BC-%EC%88%A8%EA%B8%B0%EB%8A%94-%EB%B0%A9%EB%B2%95)
 * [https://perfectacle.github.io/2018/08/19/yaml/](https://perfectacle.github.io/2018/08/19/yaml/)
 * [https://stackoverflow.com/questions/54929656/intellij-idea-not-showing-anything-endpoints-tab-failed-to-retrieve-applicatio](https://stackoverflow.com/questions/54929656/intellij-idea-not-showing-anything-endpoints-tab-failed-to-retrieve-applicatio)
+* [RabbitMQ 설치 및 기동](https://t2t2tt.tistory.com/27)
 * [Messaging with RabbitMQ](https://spring.io/guides/gs/messaging-rabbitmq/)
 * [AMQP doc](https://docs.spring.io/spring-boot/docs/2.3.2.RELEASE/reference/htmlsingle/#boot-features-amqp)
