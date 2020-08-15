@@ -3,7 +3,7 @@ layout: post
 title:  "Spring Cloud (1) - Spring Cloud Config Server"
 date:   2020-08-16 10:00
 author: juhyun10
-tags:	[MSA,spring-cloud-config-server,spring-cloud-bus]
+tags:	[MSA,spring-cloud-config-server,spring-cloud-bus,rabbitmq]
 ---
 
 # 시작하며
