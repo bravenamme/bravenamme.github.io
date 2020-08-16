@@ -28,7 +28,7 @@ tags:	[MSA,spring-cloud-config-server,spring-cloud-bus,rabbitmq]
 >       - 클라이언트 측에서 암호화하도록 마이크로서비스 구성
 >   - 저장소(Git or File) 구현 - Git<br />
 >
-> 2.Eureka - Service Registry & Discovery
+> 2.Eureka - Service Registry & Discovery<br />
 > 3.Zuul - Proxy & API Gateway<br />
 > 4.Ribbon - Load Balancer<br />
 
