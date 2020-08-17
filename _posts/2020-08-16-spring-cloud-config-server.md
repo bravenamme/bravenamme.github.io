@@ -1,13 +1,13 @@
 ---
 layout: post
-title:  "Spring Cloud (1) - Spring Cloud Config Server"
+title:  "Spring Cloud(1) - Spring Cloud Config Server"
 date:   2020-08-16 10:00
 author: juhyun10
 tags:	[MSA,spring-cloud-config-server,spring-cloud-bus,rabbitmq]
 ---
 
 # 시작하며
-이 포스트는 MSA를 보다 편하게 도입할 수 있도록 해주는 스프링 클라우드 프로젝트 중 Spring Cloud Config Server에 대해 기술한다.
+이 포스트는 MSA를 보다 편하게 도입할 수 있도록 해주는 스프링 클라우드 프로젝트 중 Spring Cloud Config Server 에 대해 기술한다.
 관련 소스는 [github/juhyun10](https://github.com/juhyun10/msa-springcloud) 를 참고바란다.
 
 앞으로 연재 방식으로 아래 컴포넌트들에 대해 포스팅을 할 예정이다.
@@ -48,7 +48,7 @@ Spring Cloud Config Server(이하 컨피그 서버)는 애플리케이션과 서
 이러한 방식의 단점은 환경설정 속성 정보가 변경되면 환경설정 파일이 애플리케이션에 함께 패키징되어 있기 때문에 애플리케이션 전체를 다시 빌드해야 한다는 점이다.
 
 컨피그 서버는 애플리케이션의 빌드없이 환경 설정의 변경을 적용할 수 있도록 해준다.<br />
-아래 컨피그 서버의 동작 흐름을 보자.
+아래 컨피그 서버의 동작 흐름을 보자. (오늘 구현할 내용이다)
 
 ![컨피그서버 동작 흐름](/files/posts/20200808/config.png)
 
@@ -319,7 +319,7 @@ your.name: "ASSU ASSU DEFAULT Modify"
 
 1의 방법이 간단해 보이지만 여기선 2번의 내용으로 진행해 볼 것이다.
 
-Spring Cloud Bus (이하 클라우드 버스) 는 현재 실행되고 있는 인스턴스의 수나 위치에 관계없이 환경설정 변경 내용이 모든 인스턴스에 적용되게 할 수 있다.
+Spring Cloud Bus (이하 클라우드 버스) 는 현재 실행되고 있는 인스턴스의 수나 위치에 관계없이 환경설정 변경 내용이 모든 마이크로서비스, 모든 인스턴스에 적용되게 할 수 있다.
 모든 인스턴스를 하나의 메시지 브로커에 연결하면 가능하다.
 
 동작 흐름은 아래와 같다.
