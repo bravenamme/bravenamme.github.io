@@ -114,17 +114,140 @@ Eureka는 서버 컴포넌트(이하 유레카 서버)와 클라이언트 컴포
 ![컨피그 서버 + 유레카](/files/posts/20200816/config_eureka.png)
 
 이 포스팅은 내용을 이해하기 위한 것이기 때문에 유레카 서버를 클러스터 모드가 아닌 독립 설치형 모드로 진행할 것이다.
+따라서 위 구성도에선 유레카 서버 != 유레카 클라이언트 이다. 
 
 유레카 서버 구축에 앞서 다른 서비스 ID를 가진 마이크로서비스가 필요하니 회원 마이크로서비스를 만들었던 것과 동일한 방식으로
 이벤트 마이크로서비스를 미리 만들어두자.<br />
 잘 안되는 분들은 [여기](https://github.com/juhyun10/msa-springcloud/commit/57dfc09b2888b98e718502c0ddcb5195703fa7a4)를 참고하세요.
 
 ## 3.1. 유레카 서버 구축
+새로운 스트링부트 프로젝트 생성 후 Config Client, Eureka Server, Actuator Dependency 를 추가한다.
 
-## 3.2. 유레카 클라이언트 구축 (유레카 서버에 서비스 등록)
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-config</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-bus-amqp</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.security</groupId>
+    <artifactId>spring-security-rsa</artifactId>
+</dependency>
+```
+
+유레카 서버도 컨피그 서버를 사용하므로 bootstrap.yaml 을 생성해 준 후 아래와 같이 구성을 설정한다.
+
+```yaml
+# eurekaserver > application.yaml
+server:
+  port: 8761          # 유레카 서버가 수신 대기할 포트
+
+# eurekaserver > bootstrap.yaml
+spring:
+  application:
+    name: eurekaserver    # 서비스 ID (컨피그 클라이언트가 어떤 서비스를 조회하는지 매핑)
+  profiles:
+    active: default         # 서비스가 실행할 기본 프로파일
+  cloud:
+    config:
+      uri: http://localhost:8889  # 컨피그 서버 위치
+```
+
+유레카 서버로 지정하기 위해 부트스트래핑 클래스에 `@EnableEurekaServer` 애노테이션을 추가한다.
+
+```java
+@EnableEurekaServer
+@SpringBootApplication
+public class EurekaserverApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(EurekaserverApplication.class, args);
+    }
+}
+``` 
+
+컨피그 저장소에 유레카 서버에 대한 설정 정보를 셋팅한다.
+
+![컨피그 저장소 디렉토리 구조](/files/posts/20200816/folder.png)
+
+컨피그 서버의 bootstrap.yaml 에 유레카 구성정보 폴더 경로를 추가한다.
+
+```yaml
+# configserver > bootstrap.yaml
+spring:
+  application:
+    name: configserver
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/juhyun10/config-repo.git
+          username: juhyun10
+          password: '{cipher}f38ff3546220bbac52d81c132916b1b1fd7c3cfdcfdf408760d1c4bf0b4ee97c'
+          search-paths: member-service, event-service, eurekaserver    # 구성 파일을 찾을 폴더 경로
+        encrypt:
+          enabled: false
+```
+
+컨피그 저장소의 유레카 서버 설정을 한다.
+
+```yaml
+# config-repo > eurekaserver.yaml
+your.name: "EUREKA DEFAULT"
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: '{cipher}17b3128621cb4e71fbb5a85ef726b44951b62fac541e1de6c2728c6e9d3594ec'
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
+eureka:
+  client:
+    register-with-eureka: false           # 유레카 서비스에 (자신을) 등록하지 않는다. (클러스터 모드가 아니므로)
+    fetch-registry: false                 # 레지스트리 정보를 로컬에 캐싱하지 않는다. (클러스터 모드가 아니므로)
+  server:
+    wait-time-in-ms-when-sync-empty: 5    # 서버가 요청을 받기 전 대기할 초기 시간 (5ms, 운영 환경에선 삭제 필요)
+```
+
+```shell
+C:\> mvn clean install
+C:\configserver\target>java -jar configserver-0.0.1-SNAPSHOT.jar
+C:\eurekaserver\target>java -jar eurekaserver-0.0.1-SNAPSHOT.jar
+```
+
+컨피그 서버와 유레카 서버를 띄웠다면 [http://localhost:8761/](http://localhost:8761/) 에 접속하여 유레카 콘솔 화면을 확인해보자.
+
+![유레카 콘솔화면](/files/posts/20200816/eureka_console.png)
+
+
+콘솔의 "Instances currently registered with Eureka"를 보면 아직 아무런 인스턴스도 등록되어 있지 않다고 나오는데
+아직 아무런 유레카 클라이언트가 실행되지 않았기 때문이다.
+
+이제 유레카 서버에 서비스를 동적으로 등록해보자. 
+
+## 3.2. 유레카 클라이언트 구축 (유레카 서버에 서비스 동적 등록)
 
 ## 3.3. 서비스 검색 (Feign 사용)
 
 # 참고 사이트
 * [스프링 마이크로서비스 코딩공작소](https://thebook.io/006962/)
-* [https://cloud.spring.io/spring-cloud-config/reference/html/](https://cloud.spring.io/spring-cloud-config/reference/html/)
+* [https://docs.spring.io/spring-cloud-netflix/docs/2.2.4.RELEASE/reference/html/](https://docs.spring.io/spring-cloud-netflix/docs/2.2.4.RELEASE/reference/html/)
+* [https://coe.gitbook.io/guide/service-discovery/eureka_2](https://coe.gitbook.io/guide/service-discovery/eureka_2)
+* 
