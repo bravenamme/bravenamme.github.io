@@ -226,6 +226,21 @@ eureka:
     wait-time-in-ms-when-sync-empty: 5    # 서버가 요청을 받기 전 대기할 초기 시간 (5ms, 운영 환경에선 삭제 필요)
 ```
 
+- register-with-eureka
+    - 레지스트리에 자신을 등록할 지에 대한 여부
+    - 클러스터링 모드의 유레카 서버 구성은 서로 peering 구성이 가능.
+      (유레카 서버 설정에 정의된 peering 노드를 찾아서 레지스트리 정보의 sync를 맞춤)
+    - 독립 실행형 모드(standalone)에서는 peering 실패가 발생하므로 유레카 클라이언트 측 동작을 끔
+    
+- fetch-registry
+    - 레지스트리에 있는 정보를 가져올 지에 대한 여부
+    
+- wait-time-in-ms-when-sync-empty
+    - registry를 갱신할 수 없을때 재시도를 기다리는 시간
+    - 테스트 시 짧은 시간으로 등록해놓으면 유레카 서비스의 시작 시간과 등록된 서비스를 보여주는 시간 단축 가능
+    - 유레카는 등록된 서비스에서 10초 간격으로 연속 3회의 상태 정보(heartbeat)를 받아야 하므로 등록된 개별 서비스를 보여주는데 30초 소요    
+
+
 ```shell
 C:\> mvn clean install
 C:\configserver\target>java -jar configserver-0.0.1-SNAPSHOT.jar
@@ -246,6 +261,7 @@ C:\eurekaserver\target>java -jar eurekaserver-0.0.1-SNAPSHOT.jar
 
 ## 3.3. 서비스 검색 (Feign 사용)
 
+서비스 검색 시 리본이 로컬 캐싱하는게 맞는지 유레카에서 리본 제거하고 해보기 (리본 제거해도 로컬 캐싱하면 책이 잘못된 것임) 
 # 참고 사이트
 * [스프링 마이크로서비스 코딩공작소](https://thebook.io/006962/)
 * [https://docs.spring.io/spring-cloud-netflix/docs/2.2.4.RELEASE/reference/html/](https://docs.spring.io/spring-cloud-netflix/docs/2.2.4.RELEASE/reference/html/)
