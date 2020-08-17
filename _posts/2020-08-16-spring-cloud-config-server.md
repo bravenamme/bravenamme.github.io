@@ -107,7 +107,7 @@ actuator에 대한 간단한 설명은 이전 포스트인 [여기](https://brav
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
     <version>2.3.2.RELEASE</version>
-  </parent>
+</parent>
 ...
 <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -131,7 +131,7 @@ application.properties의 이름을 bootstrap.yaml 으로 변경 후 아래와 �
 윈도우 환경에서는 URL의 맨 끝에 `/` 를 추가해준다.
 
 ```yaml
-# bootstrap.yaml
+# configserver > bootstrap.yaml
 spring:
   application:
     name: configserver
@@ -143,7 +143,7 @@ spring:
         native:
           search-locations: file:C:/myhome/03_Study/13_SpringCloud/assucloud/config-repo/member-service
 
-# applicaton.yaml
+# configserver > applicaton.yaml
 server:
   port: 8889    # 컨피그 서버가 수신 대기하는 포트
 management:
@@ -192,7 +192,7 @@ Actuator은 환경설정 정보 갱신 후 확인용도로 필요하다.
 application.yaml엔 로컬에 유지하고 싶은 구성정보를 기입한다.
 
 ```yaml
-# bootstrap.yaml
+# member-service > bootstrap.yaml
 spring:
   application:
     name: member-service    # 서비스 ID (컨피그 클라이언트가 어떤 서비스를 조회하는지 매핑)
@@ -202,17 +202,9 @@ spring:
     config:
       uri: http://localhost:8889  # 컨피그 서버 위치
 
-# application.yaml
+# member-service > application.yaml
 server:
   port: 8090
-management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    shutdown:
-      enabled: true
 ```
 
 컨피그 서버와 정상적으로 통신하는지 확인하기 위하여 저장소를 아래와 같이 구성하여 확인해보자.
@@ -222,7 +214,7 @@ management:
 ![회원서비스 환경설정 파일](/files/posts/20200808/memberyaml.png)
 
 ```java
-// 회원서비스 커스텀 컨피그 파일
+// member-service > CustomConfig
 @Component
 public class CustomConfig {
     @Value("${your.name}")
@@ -233,7 +225,7 @@ public class CustomConfig {
     }
 }
 
-// 회원서비스 RESTController
+// member-service > MemberController
 @RestController
 @RequestMapping("/member")
 public class MemberController {
@@ -279,6 +271,7 @@ Actuator 를 이용하여 현재 실행중인 환경 정보를 확인할 수 있
 
 `@RefreshScope` 애노테이션은 실제 프로퍼티를 받아오는 클래스에 달아준다.
 ```java
+// member-service > CustomConfig
 @Component
 @RefreshScope
 public class CustomConfig {
@@ -293,6 +286,7 @@ public class CustomConfig {
 
 이제 `member-service.yaml`의 프로퍼티 속성을 변경해보자.
 ```yaml
+# configserver > member-service.yaml
 your.name: "ASSU ASSU DEFAULT Modify"
 ```
 
@@ -368,6 +362,7 @@ RabbitMQ 매니지먼트 사이트인 http://localhost:15672/ 에 접속하여 �
 
 컨피그 서버 내 member-service.yaml에 rabbitMQ 접속 정보를 셋팅한다.
 ```yaml
+# configserver > member-service.yaml
 your.name: "ASSU ASSU DEFAULT"
 spring:
   rabbitmq:
@@ -375,6 +370,14 @@ spring:
     port: 5672
     username: guest
     password: guest
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
 ```
 
 회원 서비스를 2개의 인스턴스로 띄운 후 컨피그 저장소의 프로퍼티값을 변경해보자.
@@ -461,6 +464,7 @@ encrypt.key를 문자열로 설정하여 사용할 수도 있다.
 
 컨피그 저장소의 member-service.yaml 내용을 아래와 같이 변경한다.
 ```properties
+# configserver > member-service.yaml
 your.name: "ASSU ASSU DEFAULT Modify"
 spring:
   rabbitmq:
@@ -469,6 +473,14 @@ spring:
     username: guest
     password: '{cipher}48540a4be82e2b8fb364198d34bc24ee2970890a6264ed59afa4aad0b620cc3a'
 #    password: guest
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
 ```            
 
 제대로 반영이 되었는지 http://localhost:8889/member-service/default/ 를 호출하여 확인할 수 있다.
@@ -484,7 +496,7 @@ spring:
 
 컨피그 서버의 bootstrap.yaml 에 아래 내용을 추가한다.
 ```yaml
-# 컨피그 서버의 bootstrap.yaml
+# configserver > bootstrap.yaml
 spring:
   application:
     name: configserver
@@ -517,6 +529,7 @@ spring-security-rsa 는 컨피그 서버에서 전달된 암호화된 프로퍼�
 원격 저장소를 만든 후 컨피그 서버의 bootstrap.yaml 을 아래와 같이 변경해준다.
 
 ```yaml
+# configserver > bootstrap.yaml
 spring:
   application:
     name: configserver
