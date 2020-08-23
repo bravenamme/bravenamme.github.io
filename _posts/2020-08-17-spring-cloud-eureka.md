@@ -258,6 +258,93 @@ C:\eurekaserver\target>java -jar eurekaserver-0.0.1-SNAPSHOT.jar
 이제 유레카 서버에 서비스를 동적으로 등록해보자. 
 
 ## 3.2. 유레카 클라이언트 구축 (유레카 서버에 서비스 동적 등록)
+유레카 서버에 마이크로서비스(회원 서비스, 이벤트 서비스)를 등록하기 위해 각 마이크로서비스에 Eureka Client Dependency를 추가한다.
+
+```xml
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+</dependency>
+```
+
+컨피스 서버 원격 저장소 각 환경설정 파일에 아래 구성 내용을 추가한다.
+```yaml
+# conf-repo > member-service.yaml, event-service.yaml
+your.name: "MEMBER DEFAULT..."
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: '{cipher}17b3128621cb4e71fbb5a85ef726b44951b62fac541e1de6c2728c6e9d3594ec'
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
+eureka:   # 추가
+  instance:
+    prefer-ip-address: true       # 서비스 이름 대신 IP 주소 등록
+  client:
+    register-with-eureka: true    # 유레카 서버에 서비스 등록
+    fetch-registry: true          # 레지스트리 정보를 로컬에 캐싱
+```
+
+유레카 서비스에 등록되는 서비스는 애플리케이션 ID와 인스턴스 ID가 있는데
+애플리케이션 ID(`spring.application.name`)는 서비스 인스턴스 그룹을 의미하고,
+인스턴스 ID는 개별 서비스 인스턴스를 인식하는 임의의 숫자이다.
+
+- eureka.instance.prefer-ip-address
+    - 서비스의 호스트 이름이 아닌 IP 주소를 유레카 서버에 등록하도록 지정
+    - 기본적으로 유레카는 호스트 이름으로 접속하는 서비스를 등록하는데 DNS가 지원된 호스트 이름을 할당하는 서버 기반 환경에서는 잘 동작하지만,
+      컨테이너 기반의 배포에서 컨테이너는 DNS 엔트리가 없는 임의의 생성된 호스트 이름을 부여받아 시작하므로
+      컨테이너 기반 배포에서는 해당 설정값을 false로 하는 경우 호스트 이름 위치를 정상적으로 얻지 못함 
+
+- fetch-registry
+    - true로 설정 시 검색할 때마다 유레카 서버를 호출하는 대신 레지스트리가 로컬로 캐싱됨
+    - 30초마다 유레카 클라이언트가 유레카 레지스트리 변경 사항 여부 재확인함
+
+부트스트랩 클래스에 `@EnableEurekaClient` 애노테이션을 추가한다.
+
+```java
+// member-service > MemberServiceApplication.java
+// event-service > EventServiceApplication.java
+@EnableEurekaClient     // 추가
+@SpringBootApplication
+public class MemberServiceApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(MemberServiceApplication.class, args);
+    }
+}
+```
+
+이제 컨피그 서버, 유레카 서버, 회원/이벤트 마이크로서비스 기동 후 각 마이크로서비스들이 유레카 서버에 등록이 되는지 확인해보자.
+
+```shell
+C:\> mvn clean install
+C:\eurekaserver\target>java -jar eurekaserver-0.0.1-SNAPSHOT.jar
+C:\member-service\target>java -jar member-service-0.0.1-SNAPSHOT.jar
+C:\event-service\target>java -Dserver.port=8071 -jar event-service-0.0.1-SNAPSHOT.jar
+C:\event-service\target>java -Dserver.port=8070 -jar event-service-0.0.1-SNAPSHOT.jar
+```
+
+[http://localhost:8761/](http://localhost:8761/) 에 접속하여 유레카 콘솔 화면을 보자.
+이벤트 서비스 2개의 인스턴스, 회원 서비스 1개의 인스턴스가 각각 유레카 서버에 등록되어 있는 부분을 확인할 수 있다.
+
+![유레카 콘솔](/files/posts/20200816/eureka_console2.png)
+
+[http://localhost:8761/eureka/apps/](http://localhost:8761/eureka/apps/) 에 접속하면 유레카 서버에 등록된 레지스트리 내용을 볼 수 있다.
+
+![유레카 콘솔](/files/posts/20200816/eureka_all.png)
+
+또한 [http://localhost:8761/eureka/apps/event-service](http://localhost:8761/eureka/apps/event-service) 이런 식으로 주소 뒤에 애플리케이션 ID를 붙이면 해당 애플리케이션의 정보만 노출된다.
+
+참고로 서비스를 유레카 서버에 등록하면 서비스가 가용하다고 확인될 때까지 유레카 서버는 30초간 연속 세 번의 상태 정보를 확인하며 대기한다.
+위에선 유레카 서버 구성 파일의 `wait-time-in-ms-when-sync-empt`를 5ms로 설정하여 서비스 시작 즉시 유레카 서버에 등록이 되지만 운영 시엔 30초 정도 기다려야 서비스 검색이 가능하다.
+
 
 ## 3.3. 서비스 검색 (Feign 사용)
 
@@ -266,4 +353,4 @@ C:\eurekaserver\target>java -jar eurekaserver-0.0.1-SNAPSHOT.jar
 * [스프링 마이크로서비스 코딩공작소](https://thebook.io/006962/)
 * [https://docs.spring.io/spring-cloud-netflix/docs/2.2.4.RELEASE/reference/html/](https://docs.spring.io/spring-cloud-netflix/docs/2.2.4.RELEASE/reference/html/)
 * [https://coe.gitbook.io/guide/service-discovery/eureka_2](https://coe.gitbook.io/guide/service-discovery/eureka_2)
-* 
+* [eureka client service-url-defaultzone](https://github.com/spring-cloud/spring-cloud-netflix/issues/2541)
