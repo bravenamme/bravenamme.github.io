@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Spring Cloud(2) - Spring Cloud Eureka"
-date:   2020-08-16 10:00
+date:   2020-08-26 10:00
 author: juhyun10
 tags:	[MSA,spring-cloud-eureka,feign]
 ---
