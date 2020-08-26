@@ -3,7 +3,7 @@ layout: post
 title:  "Spring Cloud(2) - Spring Cloud Eureka"
 date:   2020-08-16 10:00
 author: juhyun10
-tags:	[MSA,spring-cloud-eureka,ribbon,feign]
+tags:	[MSA,spring-cloud-eureka,feign]
 ---
 
 # 시작하며
