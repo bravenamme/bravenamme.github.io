@@ -1,4 +1,4 @@
 ---
-name: coding-guide
-title: 'coding-guide'
+name:  coding-guide
+title: ' coding-guide'
 ---
