@@ -12,6 +12,17 @@ tags:	[MSA,spring-cloud-eureka,ribbon,feign]
 
 >[1.Spring Cloud Config Server - 환경설정 외부화 및 중앙 집중화](https://bravenamme.github.io/2020/08/16/spring-cloud-config-server/)<br />
 >***2.Eureka - Service Registry & Discovery***<br />
+>   - Service Registry & Discovery (서비스 등록 및 발견)
+>       - 서비스 동적 등록 및 정보 공유
+>       - 서비스 동적 발견
+>       - 상태 모니터링
+>   - Eureka
+>   - 유레카 구축
+>       - 유레카 서버 구축
+>       - 유레카 클라이언트 구축 (유레카 서버에 서비스 동적 등록)
+>       - 서비스 검색 (Feign 사용)
+>   - 유레카 고가용성<br />
+>
 > 3.Zuul - Proxy & API Gateway<br />
 > 4.Ribbon - Load Balancer<br />
 
@@ -92,7 +103,6 @@ Eureka는 서버 컴포넌트(이하 유레카 서버)와 클라이언트 컴포
 
 ![유레카 동작 흐름](/files/posts/20200816/eureka.png)
 
-★ 근데 리본이 있는데 로드밸런서가 있어야 하나...?
 
 >서비스 부트스트래핑 시점에 각 마이크로 서비스는 유레카 서버에 서비스 ID와 URL 등의 정보를 등록한 후 30초 간격으로 ping을 날려 자신의 가용성을 알림<br />
 >이 때 ping 요청이 몇 번 오지 않으면 가용불가한 서비스로 간주되어 레지스트리에서 제외됨<br /><br />
@@ -347,10 +357,141 @@ C:\event-service\target>java -Dserver.port=8070 -jar event-service-0.0.1-SNAPSHO
 
 
 ## 3.3. 서비스 검색 (Feign 사용)
+이제 유레카 서버에 모든 마이크로서비스가 등록되었기 때문에 회원 서비스는 이벤트 서비스 위치를 직접 알지 못해도 호출이 가능하다.
+각 다른 마이크로서비스를 검색하여 호출하는 방법은 3가지가 있는데 이 포스팅에선 넷플릭스 Feign 클라이언트로 호출하는 방법으로 진행할 예정이다.
+나머지 2가지에 대해선 간략하게 내용만 보도록 하겠다.
 
-서비스 검색 시 리본이 로컬 캐싱하는게 맞는지 유레카에서 리본 제거하고 해보기 (리본 제거해도 로컬 캐싱하면 책이 잘못된 것임) 
+- 스프링 디스커버리 클라이언트
+    - 디스커버리 클라이언트와 표준 스프링 RestTemplate 클래스를 사용
+    - `@EnableDiscoveryClinet` 사용
+    - DiscoveryClient를 직접 호출하면 서비스 목록이 반환되지만 목록에서 서비스를 선택할 책임은 사용자에게 있음
+      (=리본 클라이언트 부하 분산 못함)
+    - 서비스 호출에 사용할 URL을 직접 생성해야 함
+- RestTemplate이 활성화된 스프링 디스커버리 클라이언트
+    - `@LoadBalanced`로 RestTemplate bean 생성 메서드 정의
+    - 스프링 RestTeamplate를 사용해 리본 기반의 서비스 호출
+    - 스프링 클랄우드 초기 릴리스에 리본은 자동으로 RestTemplate 클래스를 지원했지만 스프링 클라우드 Angel 릴리스 이후 RestTemplate는
+      더 이상 리본에서 지원되지 않음. (=`@LoadBalanced` 직접 추가해야 함)
+- 넷플릭스 Feign 클라이언트
+    - `@EnagleFeignClients` 사용
+
+Feign의 자세한 내용은 이전 포스트인 [Spring Cloud Feign](https://bravenamme.github.io/2020/06/18/spring-cloud-feign/) 를 참고하면 된다.
+
+아래는 Feign을 이용하여 이벤트 서비스(=Consumer)에서 회원 서비스(=Provider)를 호출하는 방법이다.
+
+Eureka 내 Ribbon 기능이 정상적으로 동작하는지 확인하기 위해 호출하고자 하는 메소드 리턴값에 포트값을 함께 넣어주었다.
+ 
+```java
+// member-service > MemberController.java
+// 이벤트 서비스에서 호출할 회원 서비스 내 메소드 
+
+@GetMapping(value = "name/{nick}")
+public String getYourName(ServletRequest req, @PathVariable("nick") String nick) {
+    return "[MEMBER] Your name is " + customConfig.getYourName() + " / nickname is " + nick + " / port is " + req.getServerPort();
+}
+```
+
+이벤트 서비스에 open-feign Dependency를 추가한다.
+```xml
+<!-- event-service > pom xml -->
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-openfeign</artifactId>
+</dependency>
+```
+
+이벤트 서비스 부트스트랩 클래스에 `@EnableFeignClients` 를 추가한다.
+
+```java
+// event-service
+@EnableEurekaClient
+@SpringBootApplication
+@EnableFeignClients     // 추가
+public class EventServiceApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(EventServiceApplication.class, args);
+    }
+
+}
+```
+
+이벤트 서비스에 회원 Feigh Client 인터페이스를 만들어준다.
+`@FeignClient("${member.service.id}")`는 회원 서비스의 서비스 ID로 유레카 서버에 등록된 서비스 ID를 넣어준다.
+
+```java
+// event-service > client > MemberFeignClient.java
+package com.assu.cloud.eventservice.client;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+//@FeignClient(name="member-service",url = "http://localhost:8090/member/")
+@FeignClient("${member.service.id}")
+public interface MemberFeignClient {
+    @GetMapping(value = "member/name/{nick}")
+    String getYourName(@PathVariable("nick") String nick);
+}
+```
+
+실제 호출하는 로직은 아래와 같다.
+```java
+// event-service > EvenrController.java
+public class EventController {
+
+    private CustomConfig customConfig;
+    private MemberFeignClient memberFeignClient;        // 추가
+
+    public EventController(CustomConfig customConfig, MemberFeignClient memberFeignClient) {
+        this.customConfig = customConfig;
+        this.memberFeignClient = memberFeignClient;
+    }
+
+    @GetMapping(value = "name/{nick}")
+    public String getYourName(@PathVariable("nick") String nick) {
+        return "[EVENT] Your name is " + customConfig.getYourName() + ", nickname is " + nick;
+    }
+
+    /**
+     * 회원 서비스 REST API 호출
+     */
+    @GetMapping(value = "member/{nick}")
+    public String getMemberName(@PathVariable("nick") String nick) {
+        return memberFeignClient.getYourName(nick);
+    }
+}
+```
+
+이제 회원 서비스의 REST API를 호출한 준비는 끝났다.
+직접 호출하여 확인해보자.
+
+```shell
+C:\> mvn clean install
+C:\configserver>java configserver-0.0.1-SNAPSHOT.jar
+C:\member-service\target>java -Dserver.port=8090 -jar member-service-0.0.1-SNAPSHOT.jar
+C:\member-service\target>java -Dserver.port=8091 -jar member-service-0.0.1-SNAPSHOT.jar
+C:\event-service\target>java event-service-0.0.1-SNAPSHOT.jar
+```
+
+현재 이벤트 서비스 인스턴스 1개, 회원 서비스 인스턴스 2개가 떠있는 상태이다.
+![유레카 콘솔](/files/posts/20200816/eureka_console3.png)
+
+이벤트 서비스에서 회원 서비스 호출 시 8090, 8091를 번갈아가며 호출하는 것을 확인할 수 있다.
+![회원 서비스의 8090 인스턴스 호출](/files/posts/20200816/8090.png)
+
+![회원 서비스의 8091 인스턴스 호출](/files/posts/20200816/8091.png)
+
+# 4. 유레카 고가용성
+유레카 클라이언트는 유레카 레지스트리 정보를 받아와 로컬 캐싱하여 캐싱된 내용 기반으로 동작하고,
+30초 간격으로 변경 사항을 로컬 캐시에 다시 반영한다.
+따라서 유레카 서버가 멈추어도 마이크로서비스들은 영향도없이 동작한다.
+하지만 이렇게 되면 유레카 클라이언트들이 최신 정보를 반영하지 않으므로 일관성에 문제가 생길 수 있기 때문에 유레카 서버는 항상 고가용성을 유지해야 한다.
+
 # 참고 사이트
 * [스프링 마이크로서비스 코딩공작소](https://thebook.io/006962/)
 * [https://docs.spring.io/spring-cloud-netflix/docs/2.2.4.RELEASE/reference/html/](https://docs.spring.io/spring-cloud-netflix/docs/2.2.4.RELEASE/reference/html/)
 * [https://coe.gitbook.io/guide/service-discovery/eureka_2](https://coe.gitbook.io/guide/service-discovery/eureka_2)
 * [eureka client service-url-defaultzone](https://github.com/spring-cloud/spring-cloud-netflix/issues/2541)
+* [스프링 클라우드 - 마이크로서비스간 통신이란](https://happyer16.tistory.com/entry/%EC%8A%A4%ED%94%84%EB%A7%81-%ED%81%B4%EB%9D%BC%EC%9A%B0%EB%93%9C-%EB%A7%88%EC%9D%B4%ED%81%AC%EB%A1%9C%EC%84%9C%EB%B9%84%EC%8A%A4%EA%B0%84-%ED%86%B5%EC%8B%A0%EC%9D%B4%EB%9E%80-Ribbon)
+* [유레카 고가용성(클러스터링 모드)](https://supawer0728.github.io/2018/03/11/Spring-Cloud-Ribbon-And-Eureka/)
