@@ -103,6 +103,8 @@ public class Review {
 ### 도메인 생성시 고려사항
 - 도메인 모델에 set 메소드는 핵심 개념이나, 의도를 사라지게 하므로 를 넣지 않습니다.
 - 도메인 정보가 불완전한 상태에서 사용되지 않도록 생성 시점에 필요한 데이터를 모두 전달 합니다.
+- 도메인 용어를 사용하여 의미를 명확게 표현합니다.
+
 ```java
 public class Review {
     int id; // 리뷰 일련 번호
@@ -119,10 +121,10 @@ review.setReviewer(reviewer);
 
 reviewRepository.save(review); // content가 빠진채 저장
 
-
 Review review = new Review(reviewer, content, grade); // 생성자를 호출하는 시점에서 데이터를 검증
 ```
-- 도메인 용어를 사용하여 의미를 명확게 표현합니다.
+
+
 ```java
 public class Review {
     int state; // 0: 정상, 1: 삭제
@@ -137,7 +139,6 @@ public class Review {
     ReviewState state;
 }
 ```
-
 
 ### 아키텍처
 아키텍처는 크케 표현, 응용, 도메인, 인프라스트럭처 4개의 영역으로 나눠집니다.
