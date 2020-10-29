@@ -174,8 +174,6 @@ public class Review {
 ![출처: https://www.programmersought.com/article/86083216834/](/files/posts/202010/1015_4layer.png)
 
 - 각 계층은 하위계층으로만의 의존만 존재하고, 상위 계층으로는 존재하지 않습니다.
+- 하위 계층으로 의존을 막기 위해 필요 시 DIP(Dependency Inversion Principle, 의존역전원칙)을 적용합니다.
 
-
-
-
-
+다음에는 애그리거트, 리포지터리 구현등에 대해서 알아볼 예정입니다. 
