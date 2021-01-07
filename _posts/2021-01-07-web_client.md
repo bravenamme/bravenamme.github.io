@@ -6,7 +6,7 @@ author: chyusee
 ---
 
 
-###WebClient?
+### WebClient?
 
 일반적으로 Spring 에서 웹 클라인어트를 이용시에는 RestTemplate를 이용하고 있었습니다.
 
@@ -27,9 +27,9 @@ RestTemplate은 3초 요청의 응답 처리 후, 5초 요청의 응답을 처�
 WebClient는 각각 응답 처리를 하므로 총 5초가 소요됩니다.
 
 
-###의존성 설정
+### 의존성 설정
 사용하기 앞서 아래와 같이 의존성을 설정합니다.
-#####Maven
+##### Maven
 ```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
@@ -41,7 +41,7 @@ WebClient는 각각 응답 처리를 하므로 총 5초가 소요됩니다.
     <version>1.0.1.RELEASE</version>
 </dependency>
 ```
-#####Gradle
+##### Gradle
 ```gradle
 dependencies {
     compile 'org.springframework.boot:spring-boot-starter-webflux'
@@ -49,7 +49,7 @@ dependencies {
 }
 ```
 
-###Instance 생성
+### Instance 생성
 WebClient를 사용하기 위해 아래와 같이 간단한 방법으로 생성이 가능합니다.
 ```java
 // 기본 설정으로 생성
@@ -69,7 +69,7 @@ WebClient client3 = WebClient
   .build();
 ```
 
-#####Timeout 설정하기
+##### Timeout 설정하기
 TcpClient의 ChannelOption.CONNECT_TIMEOUT_MILLIS 값을 통해 Connection Timeout을 설정합니다. 
 ReadTimeoutHandler 및 WriteTimeoutHandler를 사용하여 Read Timeout 및 Write Timeout을 설정할 수도 있습니다.
 ```java
@@ -86,7 +86,7 @@ WebClient client = WebClient.builder()
   .build();
 ```
 
-###Request 요청
+### Request 요청
 ##### Method 설정
 아래와 같은 방식으로 Http Method를 설정할 수 있습니다.
 post, get, put, delete, patch등 모든 Http Method가 정의되어 있습니다
