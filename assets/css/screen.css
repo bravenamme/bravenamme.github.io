@@ -1511,6 +1511,10 @@ body.page-template {
     text-align: left;
   }
 
+  #post-content figure img {
+    width: 100%
+  }
+
   #post-footer {
     height: 100px;
     margin: 0 15px;
