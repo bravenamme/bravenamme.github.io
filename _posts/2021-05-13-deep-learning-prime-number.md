@@ -119,9 +119,6 @@ tags:	[ai, deep-learning, prime-number]
 앞서 말해서, 소수의 정의를 알아봤고, 그 소수의 패턴을 알 수가 없는것을 알아왔습니다.  
 오히려 패턴을 알기 위해, 데이터의 패턴을 알려줘야 하는 모순에 봉착한 것이죠.
 
-
-Even if you try to train an algorithm you will have something that will approximate a solution. You can't choose features good enough to predict the solution.
-
 그냥 무시하고 머신러닝 알고리즘을 훈련 시키려고 해도 입력한 데이터에 가까운 무언가만 가지게 될 것이며. 실제 예측이랑 터무니 없는 답만 나올 것이기 때문입니다.
 
 따라서 우리가 정확한 소수를 찾을려면 이미 계산할 정확한 방법이 있을 때 쓸 수 있는거지,  
