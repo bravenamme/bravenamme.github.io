@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "thymeleaf"
-date:   2021-06-16 09:00
+date:   2021-06-17 12:00
 author: chyusee
 ---
 
@@ -219,6 +219,24 @@ default 는 th:case="*" 형태로 사용
         <td th:text="${prod.inStock}? #{true} : #{false}">yes</td>
     </tr>
 </table>
+```
+
+
+### Javascript 내에서 사용 시
+시작 부분을 /*[# th:..."]*/ <br>
+끝부분을 /*[/]*/ 로 닫음 <br>
+변수의 경우 /*[[ ]]*/ 로 감싸줌
+
+```html
+    /*[# th:if="${user != null && user.isAgree}"]*/
+        alert('동의가 필요합니다.');
+    /*[/]*/
+    
+    /*[# th:each="book : ${bookList}"]*/
+       book.id = /*[[ ${book.id} ]]*/;
+       book.title = /*[[ ${book.title} ]]*/;
+    /*[/]*/
+    
 ```
 
 
