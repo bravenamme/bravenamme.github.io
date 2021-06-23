@@ -81,21 +81,47 @@ public class Member {
 - 먼저 어노테이션이 필요하겠네요
 
 ```java
-@Target(ElementType.TYPE)
+@Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AddPrefixOld {
 }
 ```
 
-- 아래 함수는 AOP 를 통해 잡힌 pointcut에서 실행되는 advice 함수라고 해 보겠습니다.
-
+- 그 다음 실제 사용하는 코드에서 어노테이션을 적용 하구요
 ```java
-public Member someAdvice() {
-    // 처리 도중에 잡아낸 Member객체
-    Member m = someMember;
-    m.setName("[old]"+m.getName())
+@AddPrefixOld
+public Member someFunction() {
+  Member member = doSomething();
+  return member;
 }
 ```
 
-<!-- ![그림](/files/posts/20210414/guzo.png) -->
-<!-- [링크](ap-northeast-2.console.aws.amazon.com/polly/home/SynthesizeSpeech) -->
+- pointcut을 통해 해당 함수를 캐치하게 한 뒤,
+- 잡힌 pointcut에서 실행되는 advice 함수를 작성 해 봅니다.
+
+```java
+public Member someAdvice(JoinPoint jp) {
+  
+  // 리플렉션으로 AOP 대상 메소드 시그니쳐를 얻어 Annotation 보유 여부를 확인
+  MethodSignature signature = (MethodSignature) jp.getSignature();
+  Method method = signature.getMethod();
+  AddPrefixOld annotation = method.getDeclaredAnnotation(AddPrefixOld.class);
+  Member targetObj = jp.proceed();
+  if (annotation != null) {
+    // AddPrefixOld 어노테이션을 보유한 경우 특수 처리 추가
+    if (targetObj.getAge() > 29) {
+      targetObj.setName("[old]"+targetObj.getName());
+    }
+  }
+  return targetObj;
+}
+```
+
+- 이런 처리를 통해 이제 Member 객체를 리턴하는 모든 메소드에는 @AddPrefixOld 어노테이션을 추가하는 것 만으로 (Annotate 하는 것만으로) "[old]" 라는 접두사를 붙이는 공통 처리가 가능해졌습니다.
+- 물론 해당 메소드 실행구간이 pointcut에 잡혀 있어야 겠지만요.
+- 어노테이션을 활용할 수 있는 방법이야 무궁무진 하겠고, 생각하기 나름이겠지만<br/>
+이런 방법으로도 사용해 본 적이 있다는 방법을 소개 해 드리고 싶었습니다.
+- 지금 생각해보면 사실 올바른 사용법 인지에 대한 검증은 되어 있지 않으나.. 이것저것 해 보며 배울 수 있는 부분이 많았다고 생각 되어요.
+- 물론 어렵겠지만 개발 하면서 돌아가네.. 하고 넘어가는 것도 좋지만 이렇게해볼까? 저렇게해볼까? 하는 고민을 하는 과정 또한 너무 재밌는 과정인 것 같아요
+
+- 읽어주셔서 감사합니다.
