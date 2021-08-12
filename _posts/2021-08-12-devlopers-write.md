@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "개발자를 위한 글쓰기 가이드" 를 읽고...
+title:  "개발자를 위한 글쓰기 가이드 를 읽고..." 
 date:   2021-08-12 10:00
 author: chyusee
 ---
