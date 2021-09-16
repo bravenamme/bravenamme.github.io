@@ -3,7 +3,7 @@ layout: post
 title:  "command shell"
 date:   2021-09-16 10:00
 author: ryan
-tags:	[]
+tags:	[shell]
 ---
 
 ## 터미널 명령어
