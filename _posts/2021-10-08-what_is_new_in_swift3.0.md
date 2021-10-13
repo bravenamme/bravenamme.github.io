@@ -43,7 +43,8 @@ AsyncImage(url: URL(String: <hereUrl>)!)
 (이제는 오픈소스에 의존하지 않아도 될 것 같다.)
 
 ## table 검색
-기존 table에는 검색 기능이 없어서 개발자가 한땀 한땀 만들어야만 했다. 하지만 IOS15 에서 지원하는 searchable을 통해 navigationView 안에서 검색기능 UI를 제공할 수 있다. (안드로이드는 예전 부터 제공하던걸 이제서야 지원하다니 많이 늦은 느낌이다.)
+기존 table 에는 검색 기능이 없어서 Search Controller 를 가지고 따로 개발하여 table 에 붙여야 하는 형식 이었다. 하지만 IOS15 에서는 searchable을 통해 navigationView 안에서 Table 검색기능 바로 개발 할 수 있다. 
+(안드로이드는 예전 부터 이런 방식으로 개발해왔다.)
 
 ![https://betterprogramming.pub/](/files/posts/2021_10_08_swiftUI04.gif)
 
