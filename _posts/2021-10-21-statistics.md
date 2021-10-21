@@ -4,7 +4,7 @@ title:  "통계학 시작하기"
 date:   2021-10-21 10:00
 author: chyusee
 ---
-###몬티홀 문제
+### 몬티홀 문제
 
 넷플릭스의 드라마 D.P.에 '몬티홀 문제' 라는 에피소드가 있습니다.
 
@@ -46,7 +46,7 @@ author: chyusee
 
 ![](/files/posts/20211021/dugun.jpg)
 
-###확률과 통계
+### 확률과 통계
 '확률과 통계' 라고 하면 고등학교 수학과정 어디인가에 있었던 걸로 기억되시는 분들이 많으실겁니다.
 
 순열, 이항정리, 확률분포등등 있었던것 같은데, 우리는 수능을 다시 볼게 아니니 일단 넘어가도록 합니다.
@@ -87,7 +87,7 @@ author: chyusee
 ![출처: https://ichi.pro/ko/beom-wi-sa-bun-wi-gan-beom-wi-mich-sangja-geulim-279760911204109](/files/posts/20211021/selectivity.png)
 
 
-####분산(표준편차)
+##### 분산(표준편차)
 각데이터와 평균의 차이를 각각 제곱한 합을 데이터 수로 나눈것으로,
 데이터의 흩어짐 정도를 나타내는 값을 의미 합니다.
 
@@ -96,7 +96,7 @@ author: chyusee
 ![출처: https://www.delftstack.com/ko/howto/csharp/csharp-standard-deviation/](/files/posts/20211021/standard_deviation.png)
 
 
-####사분위수
+##### 사분위수
 
 사분위 범위 : 데이터 범위의 1/4, 3/4 까지의 폭
 범위 : 데이터가 위치하는 폭, 최대값 - 최소값
