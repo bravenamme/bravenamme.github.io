@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "확률과 통계" 
+title:  "통계학 시작하기" 
 date:   2021-10-21 10:00
 author: chyusee
 ---
@@ -74,15 +74,46 @@ author: chyusee
 - 중앙 값 : 데이터를 나열 했을 떄 한가운데 있는 값
 - 최빈 값 : 데이터 중에서 가장 빈도가 높은 값
 
+![출처: https://blog.daum.net/tib007/37](/files/posts/20211021/mode.png)
+
 평균 값으로 내었을때 영업 1팀의 평균연봉이 500, 영업2팀은 200이 나왔습니다.
+
+영업 1팀은 대표님 직속이라 대표님의 연봉도 포함되어 있습니다.
 
 그러면 영업1팀의 직원들이 훨씬 많은 연봉을 받게 되는 걸까요?
 
 이런 평균의 함정에 빠지는 걸 방지하기 위해 자료의 산포도(흩어짐 정도) 이용하게 됩니다.
 
-- 분산(표준편차) : 데이터의 흩어짐 정도를 나타내는 값
-- 사분위범위 : 데이터 범위의 1/4, 3/4 까지의 폭
-- 범위 : 데이터가 위치하는 폭
+![출처: https://ichi.pro/ko/beom-wi-sa-bun-wi-gan-beom-wi-mich-sangja-geulim-279760911204109](/files/posts/20211021/selectivity.png)
+
+
+####분산(표준편차)
+각데이터와 평균의 차이를 각각 제곱한 합을 데이터 수로 나눈것으로,
+데이터의 흩어짐 정도를 나타내는 값을 의미 합니다.
+
+분산 = (표준편차)²
+
+![출처: https://www.delftstack.com/ko/howto/csharp/csharp-standard-deviation/](/files/posts/20211021/standard_deviation.png)
+
+
+####사분위수
+
+사분위 범위 : 데이터 범위의 1/4, 3/4 까지의 폭
+범위 : 데이터가 위치하는 폭, 최대값 - 최소값
+
+![출처: https://blog.naver.com/sw4r/221021173204](/files/posts/20211021/quantile.png)
+
+여기가지 대략적인 기초용어에대해서 알아 보았습니다.
+
+다음에는 좀더 심화적인 내용을 알아보려고 합니다. 
+
+
+
+참고서적
+
+[이렇게 쉬운 통계학](https://book.naver.com/bookdb/book_detail.nhn?bid=14594980)
+
+
 
 
 
