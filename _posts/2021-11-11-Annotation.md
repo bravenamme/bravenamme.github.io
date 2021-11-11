@@ -3,7 +3,7 @@ layout: post
 title:  "Annotation 이해하기"
 date:   2021-11-10 22:00
 author: rman
-tags:	[어노테이션]
+tags:	[annotation]
 ---
 
 ## 들어가기 앞서
