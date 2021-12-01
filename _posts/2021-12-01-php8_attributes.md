@@ -127,7 +127,7 @@ private function resolveListeners(string $subscriberClass): array
 
 **ReflectionMethod::getAttributes()** 를 통해 주석 문자열을 parsing 하는 것보다 메타 데이터를 쉽게 읽을 수 있는 것을 확인할 수 있습니다. 
 
-> 역주 : php 8 이전에는 annotation 을 문법적으로 지원하지 못해, php 소스코드를 string 으로 parsing 해서 주석 문자열 (/* */) 을 읽어서 구현하였습니다. ㅎㄷㄷ
+> 역주 : php 8 이전에는 annotation 을 문법적으로 지원하지 못해, php 소스코드의 주석을 string 으로 parsing 해서 구현하였습니다. ㅎㄷㄷ [ReflectionProperty::getDocComment](https://www.php.net/manual/en/reflectionproperty.getdoccomment)
 
 좀 어려운 포인트가 두가지 있는데요, 한번 정리해보겠습니다.
 
@@ -215,3 +215,4 @@ Ref.
 * [PHP 8: Attributes](https://stitcher.io/blog/attributes-in-php-8)
 * [laravel-route-attributes](https://github.com/spatie/laravel-route-attributes)
 * [PHP: PHP 8 기능 정리 및 요약 - 개발자 정상우](https://pronist.tistory.com/60)
+* [PHP 소식 - Attribute](https://velog.io/@qroffle/PHP-%EC%86%8C%EC%8B%9D-Attribute)
