@@ -2,7 +2,7 @@
 layout: post
 title:  "울펜슈타인3D 는 과연 어떻게 3d를 구현했을까요?"
 date:   2020-12-09 13:00
-author: monoless
+author: q_lazzarus
 tags:	[game, wolfenstain, raycasting, 3d]
 ---
 

@@ -2,7 +2,7 @@
 layout: post
 title:  "딥러닝과 소수"
 date:   2021-05-12 21:00
-author: monoless
+author: q_lazzarus
 tags:	[ai, deep-learning, prime-number]
 ---
 

@@ -2,7 +2,7 @@
 layout: post
 title:  "mobx를 이용한 flutter 상태 관리"
 date:   2019-09-05 00:00
-author: monoless
+author: q_lazzarus
 tags:	[flutter, dart, mobx, state, reactive, android, ios, iphone, google, hybrid]
 ---
 

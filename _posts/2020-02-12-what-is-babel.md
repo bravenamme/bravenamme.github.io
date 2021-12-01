@@ -2,7 +2,7 @@
 layout: post
 title:  "babel 이란 무엇인가?"
 date:   2020-02-12 21:56
-author: monoless
+author: q_lazzarus
 tags:	[javascript, webpack, babel, polyfill, esnext, typescript]
 ---
 

@@ -2,7 +2,7 @@
 layout: post
 title:  "내 탭이 날라가 버렸어!"
 date:   2021-03-03 23:55
-author: monoless
+author: q_lazzarus
 tags:	[thread, process, browser, chromium]
 ---
 

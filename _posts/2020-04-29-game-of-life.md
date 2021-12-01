@@ -2,7 +2,7 @@
 layout: post
 title:  "phaser 로 구현해 보는 콘웨이의 생명게임"
 date:   2020-04-28 04:00
-author: monoless
+author: q_lazzarus
 tags:	[phaser, typescript, game, life, cells]
 ---
 
@@ -76,7 +76,7 @@ tags:	[phaser, typescript, game, life, cells]
 ### phaser scene system
 
 > 전체 코드는 여기를 참조 하세요.  
-> [https://github.com/monoless/lifegame](https://github.com/monoless/lifegame)
+> [https://github.com/q_lazzarus/lifegame](https://github.com/q_lazzarus/lifegame)
 
 먼저 phaser 의 scene 시스템을 이해해야 합니다.
 

@@ -2,7 +2,7 @@
 layout: post
 title:  "gitlab-runnner 를 활용한 docker 배포"
 date:   2020-09-16 06:00
-author: monoless
+author: q_lazzarus
 tags:	[git, gitlab, gitlab-runner, docker, deploy, ci, cd]
 ---
 

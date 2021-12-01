@@ -2,7 +2,7 @@
 layout: post
 title:  "php 로 IntegerArray 구현하기"
 date:   2019-11-27 23:52
-author: monoless
+author: q_lazzarus
 tags:	[php, iterator, array, integer]
 ---
 
@@ -11,8 +11,8 @@ tags:	[php, iterator, array, integer]
 (나쁜거 아니에요!)
 
 ```php
-$a = ['monoless' => '킹왕짱'];
-echo $a['monoless'];
+$a = ['q_lazzarus' => '킹왕짱'];
+echo $a['q_lazzarus'];
 ```
 
 다시 기초로 돌아가자면, array 는 동일한 자료구조의 반복 입니다.
@@ -349,7 +349,7 @@ iterator speed average : 0.0068418407440186
 ![오늘도 망했어요...](https://jjalbang.today/files/jjalboxthumb/2018/01/102_6895.jpg)
 
 역시 기존껄 쓰는거 좋은거라고 배우고... 오늘도 맥주와 치킨을 시키며 잡니다.  
-그래도 제 삽질이 좋다면, [github](https://github.com/monoless/arrays) 와 이 [패키지](https://packagist.org/packages/monoless/arrays)를 참고하세요
+그래도 제 삽질이 좋다면, [github](https://github.com/q_lazzarus/arrays) 와 이 [패키지](https://packagist.org/packages/q_lazzarus/arrays)를 참고하세요
 
 ## 후일담...
 

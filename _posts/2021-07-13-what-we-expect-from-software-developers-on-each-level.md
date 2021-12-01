@@ -2,7 +2,7 @@
 layout: post
 title:  "각 레벨의 개발자에 기대하는 것들"
 date:   2021-07-13 18:00
-author: monoless
+author: q_lazzarus
 tags:	[insight]
 ---
 

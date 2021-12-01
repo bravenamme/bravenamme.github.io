@@ -2,7 +2,7 @@
 layout: post
 title:  "axios와 vue를 이용한 분할 업로드"
 date:   2019-06-20 10:00
-author: monoless
+author: q_lazzarus
 tags:	[chunk-upload, axios, vue, laravel, php, javascript, ECMAscript]
 ---
 
@@ -278,5 +278,5 @@ onSubmit() {
 [resumablejs]: http://www.resumablejs.com/
 [blob]: https://developer.mozilla.org/ko/docs/Web/API/Blob
 [formdata]: https://developer.mozilla.org/ko/docs/Web/API/FormData
-[github]: https://github.com/monoless/chunk-upload-axios-vue-laravel
+[github]: https://github.com/q_lazzarus/chunk-upload-axios-vue-laravel
 [bootstrap]: https://getbootstrap.com/

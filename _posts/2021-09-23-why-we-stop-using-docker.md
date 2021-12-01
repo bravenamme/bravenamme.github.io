@@ -2,7 +2,7 @@
 layout: post
 title:  "왜 우리가 이제 도커를 그만 써야 할까요?"
 date:   2021-09-23 00:00
-author: monoless
+author: q_lazzarus
 tags:	[docker]
 ---
 
