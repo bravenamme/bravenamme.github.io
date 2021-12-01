@@ -135,8 +135,6 @@ private function resolveListeners(string $subscriberClass): array
 
 즉, 기술적으로는 custom attribute 를 작성할 필요 조차 없다는 것입니다. 물론 **$attribute->getArguments()** 를 직접 호출할 수 있습니다. 또한 클래스를 인스턴스화한다는 것은 원하는 방식으로 구문 분석 입력을 생성할 수 있다는 것을 의미합니다. 대체로 **newInstance()**를 사용하여 속성을 인스턴스화하는 것이 좋습니다.
 
-The second thing worth mentioning is the use of ReflectionMethod::getAttributes(), the function that returns all attributes for a method. You can pass two arguments to it, to filter its output.
-
 두번째로 **ReflectionMethod::getAttributes()** 를 이용한 메쏘드의 모든 attributes 를 반환하는 함수의 사용입니다. 두가지 parameter 를 사용하여 반환값 필터링할 수 있습니다. 자세한건 아래 문서를 확인해주세요. [ReflectionFunctionAbstract::getAttributes](https://www.php.net/manual/en/reflectionfunctionabstract.getattributes.php)
 
 이 필터링을 이해하려면 먼저 attributes 에 대해서 알아야 할 것이 한 가지 더 있습니다. method 뿐만 아니라 class, property 또는 constant에 여러 attribute 을 추가할 수 있다는 것입니다.
