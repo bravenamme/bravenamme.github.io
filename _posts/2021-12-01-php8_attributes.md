@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "php8 에 도입되는 annotation (attributes)"
-date:   2021-1201 10:00
+date:   2021-12-01 10:00
 author: q_lazzarus
 tags:	[php, annotation]
 ---
