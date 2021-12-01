@@ -31,7 +31,7 @@ class ProductSubscriber
 
 뒷부분에 실제 사용하는 다른 코드를 보여드리겠습니다만. 이 코드가 attirbutes 를 가장 설명하기 좋은 예라고 생각합니다.
 
-이 문법이 여러분들이 기대했던 것이 아닐 수도 있습니다. 보통 @ 혹은 @: /* */  같은 주석을 선호할 수 도 있습니다. 사실 이런 문법에 대한 논쟁들은 php rfc 에 대한 토론을 읽어보길 권장 드립니다. [[RFC] [VOTE] Shorter Attribute Syntax](https://externals.io/message/110640)
+이 문법이 여러분들이 기대했던 것이 아닐 수도 있습니다. 보통 @ 혹은 @: /* */  같은 주석을 선호할 수 도 있습니다. 사실 이런 문법에 대한 논쟁들은 php rfc 에 대한 토론을 읽어보길 권장 드립니다. [PHP RFC: Shorter Attribute Syntax](https://externals.io/message/110640)
 
 일단 코드에 집중 하도록 하겠습니다. 저 **ListensTo** 는 어떻게 작동할가요?
 
