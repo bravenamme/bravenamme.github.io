@@ -7,7 +7,7 @@ author: sunyung
 
 ## 소개
 
-![https://apple.com](/files/posts/in_app_event_01.png)
+![https://apple.com](/files/posts/in_app_event_01.PNG)
 
 인앱이벤트 기능은 iOS/iPadOS15 부터 지원하는 기능으로, 쉽게 말해 앱 내부에서 진행되는 이벤트를 앱스토어에서 노출 시킬 수 있는 기능입니다.
 
@@ -28,7 +28,7 @@ author: sunyung
 ## 인앱이벤트 생성 및 관리
 
 인앱이벤트 기능은 앱을 수정하지 않고도 도입할 수 있는 기능입니다. iOS 앱을 관리하는 사이트인 App Store Connect 사이트에서 생성과 관리가 가능합니다.
-![https://apple.com](/files/posts/in_app_event_02.png)
+![https://apple.com](/files/posts/in_app_event_02.PNG)
 
 ## 기간설정
 
@@ -64,4 +64,4 @@ author: sunyung
 
 
 ## 참고
-![https://developer.apple.com/app-store/in-app-events/]
+<https://developer.apple.com/app-store/in-app-events/>
